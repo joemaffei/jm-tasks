@@ -1,0 +1,36 @@
+{
+  "name": "jm-tasks",
+  "version": "0.1.0",
+  "description": "A task management PWA built with Vue.js",
+  "private": true,
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "lint:md": "markdownlint-cli2 \"**/*.md\" \"!.ai/**\" \"!node_modules/**\"",
+    "lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"!.ai/**\" \"!node_modules/**\"",
+    "commit": "cz",
+    "postinstall": "node -e \"if(process.version.match(/^v(1[89]|2[01])/)){console.error('Node.js 22+ required. Use nvm: nvm use');process.exit(1)}\"",
+    "prepare": "husky"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.md": [
+      "markdownlint-cli2 --fix"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "markdownlint-cli2": "^0.20.0"
+  }
+}
