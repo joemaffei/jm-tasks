@@ -132,8 +132,29 @@ established before application development begins.
 
 - [Architecture](docs/ARCHITECTURE.md) - System architecture and technical design
 - [Development Guidelines](docs/DEVELOPMENT.md) - Coding conventions and project structure
+- [Project Management](docs/PROJECT_MANAGEMENT.md) - Task and decision management with backlog.md
 - [Authentication](docs/AUTHENTICATION.md) - Authentication strategy and security considerations
 - [Deployment](docs/DEPLOYMENT.md) - Deployment setup and CI/CD configuration
+
+## Project Management
+
+This project uses [backlog.md](https://github.com/MrLesk/Backlog.md) for task and decision management. Tasks and
+decisions are stored as markdown files in the `backlog/` directory.
+
+**Quick Start:**
+
+```bash
+# View tasks
+npx backlog task list
+
+# Open web UI
+npx backlog browser
+
+# View Kanban board
+npx backlog board
+```
+
+See [Project Management documentation](docs/PROJECT_MANAGEMENT.md) for detailed usage information.
 
 ## AI-Assisted Development
 

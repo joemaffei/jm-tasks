@@ -417,3 +417,8 @@ const task = await fetch('/api/tasks', { method: 'POST', ... }) // Blocks UI
 - Modern browsers (last 2 versions)
 - Mobile browsers (iOS Safari, Chrome Mobile)
 - Progressive enhancement for older browsers
+
+## Project Management
+
+This project uses backlog.md for task and decision management. See
+[Project Management](PROJECT_MANAGEMENT.md) for detailed information about using backlog.md.
