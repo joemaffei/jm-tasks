@@ -122,6 +122,7 @@ The project follows a standard Vue.js application structure:
 
 ## Important Notes for AI Assistants
 
+- **CRITICAL: Always run `nvm use` first** - The project requires Node.js 22 LTS. Before running any npm commands, terminal commands, or development tasks, ALWAYS run `nvm use` to ensure the correct Node.js version is active. The project uses `.nvmrc` to specify Node.js 22.
 - This is a personal project, not a commercial product
 - Focus on simplicity and maintainability
 - Code should be well-documented
