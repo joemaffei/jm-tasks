@@ -18,7 +18,10 @@ div {
 }
 
 h1 {
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   font-size: 2rem;
   color: #2c3e50;
 }
