@@ -10,8 +10,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "vitest",
+    "test": "vitest run",
     "test:ui": "vitest --ui",
+    "test:watch": "vitest watch",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.vue,.mjs",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx,.vue,.mjs --fix",
     "format": "prettier --write \"**/*.{js,jsx,vue,mjs,json,css,scss}\"",
