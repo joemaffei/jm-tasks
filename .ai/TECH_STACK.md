@@ -218,13 +218,15 @@
 
 ### Component Testing
 
-- **Framework**: Vue Test Utils
+- **Framework**: @testing-library/vue (preferred) and @vue/test-utils
 - **Purpose**: Test Vue component behavior and interactions
 - **Approach**:
   - Test small, focused components
   - Minimal setup required due to component size
   - Test component behavior, not implementation details
   - Use real composables and services where possible
+  - @testing-library/vue encourages testing from user perspective with queries like `getByRole`, `getByText`
+  - Both frameworks are available; choose the most appropriate for each test case
 
 ### E2E Testing
 

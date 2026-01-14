@@ -14,8 +14,14 @@ We need to establish testing principles and approaches for the project. Key cons
 - Test organization
 - Testing utilities vs real implementations
 - Component testing vs unit testing
+- Testing framework selection
 
 Common approaches vary from heavy mocking to minimal mocking with real implementations.
+
+For component testing, we considered:
+
+- Vue Test Utils: Official Vue testing utilities, lower-level API
+- Testing Library (@testing-library/vue): Higher-level queries focused on user-facing behavior, encourages testing from user perspective
 
 ## Decision
 
@@ -49,6 +55,10 @@ Core principles:
 
 ### Implementation Notes
 
+- **Testing Frameworks**: Use both @vue/test-utils and @testing-library/vue
+  - @vue/test-utils: Official Vue testing utilities for lower-level component testing
+  - @testing-library/vue: Preferred for component tests as it encourages testing behavior from user perspective
+  - Both frameworks complement each other; use the most appropriate for each test case
 - Extract business logic to `utils/` or `services/` directories
 - Keep Vue components focused on presentation logic
 - Test pure functions with real implementations

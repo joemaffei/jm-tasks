@@ -241,7 +241,9 @@ Only use `--no-verify` in exceptional circumstances and document why.
 - **Component Tests**: For Vue components
   - Test component behavior and user interactions
   - Minimal setup required due to small component size
-  - Use Vue Test Utils for component testing
+  - Use @testing-library/vue (preferred) or @vue/test-utils for component testing
+  - @testing-library/vue encourages testing from user perspective with queries like `getByRole`, `getByText`, etc.
+  - Both frameworks are available; choose the most appropriate for each test case
 
 - **Integration Tests**: For critical user flows
   - Test complete workflows end-to-end

@@ -1,7 +1,7 @@
 ---
 id: task-5
 title: Set up Vitest Testing Framework
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-13'
 labels:
@@ -16,26 +16,29 @@ priority: high
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Set up Vitest testing framework with Vue Test Utils for component testing. Configure the test environment to support Vue components and create a basic test to verify the testing infrastructure works.
+Set up Vitest testing framework with Vue Test Utils and @testing-library/vue for component testing. Configure the test environment to support Vue components and create a basic test to verify the testing infrastructure works. Use @testing-library/vue as the preferred approach for component tests.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 
-- [ ] Vitest installed and configured
-- [ ] Vue Test Utils installed and configured
-- [ ] Test environment configured (jsdom)
-- [ ] Test configuration file created
-- [ ] Path aliases configured (match Vite config)
-- [ ] One passing test created (e.g., test App.vue renders)
-- [ ] npm scripts added: `test`, `test:ui` (optional)
-- [ ] Tests can be run successfully
+- [x] Vitest installed and configured
+- [x] Vue Test Utils installed and configured
+- [x] @testing-library/vue installed and configured
+- [x] Test environment configured (jsdom)
+- [x] Test configuration file created
+- [x] Path aliases configured (match Vite config)
+- [x] One passing test created (e.g., test App.vue renders) using @testing-library/vue
+- [x] npm scripts added: `test`, `test:ui` (optional)
+- [x] Tests can be run successfully
 
 ## Technical Implementation
 
 **Install Dependencies:**
 
 - `vitest@^1.6.0`
-- `@vue/test-utils@^2.4.6`
+- `@vue/test-utils@^2.4.6` (lower-level Vue testing utilities)
+- `@testing-library/vue@^8.1.0` (preferred for component tests, encourages user-focused testing)
+- `@testing-library/user-event@^14.5.2` (for user interaction testing)
 - `jsdom@^24.0.0`
 
 **Create Configuration:**
@@ -48,13 +51,15 @@ Set up Vitest testing framework with Vue Test Utils for component testing. Confi
 
 2. Create `tests/setup.js` (if needed):
    - Global test setup
-   - Vue Test Utils global config
+   - Document both @vue/test-utils and @testing-library/vue usage
+   - Vue Test Utils global config (if needed)
    - Test utilities/fixtures
 
 **Create First Test:**
 
 - Test file: `tests/components/App.spec.js` or `tests/App.test.js`
-- Test that App.vue component renders
+- Test that App.vue component renders using @testing-library/vue
+- Use queries like `getByRole`, `getByText` to test from user perspective
 - Verify the test passes
 
 **Update package.json scripts:**
