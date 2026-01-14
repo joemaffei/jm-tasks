@@ -19,10 +19,6 @@ jm-tasks/
 │   ├── styles/          # Global styles
 │   ├── App.vue          # Root component
 │   └── main.js          # Application entry point
-├── tests/               # Test files (co-located or separate)
-│   ├── unit/            # Unit tests for utils and services
-│   ├── components/      # Component tests
-│   └── integration/     # Integration tests
 ├── public/              # Public assets
 ├── docs/                # Documentation
 └── .ai/                 # AI context files
@@ -233,12 +229,16 @@ Only use `--no-verify` in exceptional circumstances and document why.
 
 ### Testing Structure
 
+**Tests must be colocated with the modules they test.** Component and unit tests should be placed next to the files they test using the `.test.js` or `.test.ts` extension.
+
 - **Unit Tests**: For utilities, services, and pure functions
+  - Colocated with the module being tested (e.g., `utils/formatDate.test.ts` next to `utils/formatDate.ts`)
   - Test in isolation without component setup
   - Fast execution
   - High coverage of business logic
 
 - **Component Tests**: For Vue components
+  - Colocated with the component (e.g., `TaskItem.test.js` next to `TaskItem.vue`)
   - Test component behavior and user interactions
   - Minimal setup required due to small component size
   - Use @testing-library/vue (preferred) or @vue/test-utils for component testing
@@ -246,6 +246,7 @@ Only use `--no-verify` in exceptional circumstances and document why.
   - Both frameworks are available; choose the most appropriate for each test case
 
 - **Integration Tests**: For critical user flows
+  - May be colocated with relevant modules or placed in a shared location if they span multiple modules
   - Test complete workflows end-to-end
   - Use real dependencies where possible
   - Verify data flows through the application
@@ -266,7 +267,7 @@ export function formatTaskDueDate(date) {
   return new Date(date).toLocaleDateString();
 }
 
-// TaskHelper.test.js
+// utils/taskHelpers.test.js (colocated)
 import { formatTaskDueDate } from './taskHelpers';
 // Test the actual function without component setup
 ```
@@ -291,12 +292,18 @@ function formatTaskDueDate(date) {
 import { formatTaskDueDate } from '@/utils/taskHelpers';
 // Minimal setup for testing
 </script>
+
+// TaskItem.test.js (colocated)
+// Test component behavior without complex setup
 ```
 
 #### ✅ Good: Testing Real Implementation
 
 ```javascript
-// taskService.test.js
+// services/taskService.js
+export class TaskService { ... }
+
+// services/taskService.test.js (colocated)
 import { TaskService } from './taskService';
 import { openDB } from 'idb'; // Real IndexedDB
 
