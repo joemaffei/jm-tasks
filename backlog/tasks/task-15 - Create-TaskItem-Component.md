@@ -1,7 +1,7 @@
 ---
 id: task-15
 title: Create TaskItem Component
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-15'
 labels:
@@ -22,15 +22,15 @@ Create a TaskItem component that displays an individual task with editable title
 
 ## Acceptance Criteria
 
-- [ ] `src/components/TaskItem.vue` created
-- [ ] Component accepts `task` prop (Task object)
-- [ ] Displays task title using TaskInput component
-- [ ] Checkbox for done/undone status
-- [ ] Visual distinction for done tasks (strikethrough, grayed out)
-- [ ] Emits events for: edit, toggle done, delete
-- [ ] Component tests created and passing
-- [ ] Styled with Tailwind CSS
-- [ ] Accessible (keyboard navigation, ARIA labels)
+- [x] `src/components/TaskItem.vue` created
+- [x] Component accepts `task` prop (Task object)
+- [x] Displays task title using TaskInput component
+- [x] Checkbox for done/undone status
+- [x] Visual distinction for done tasks (strikethrough, grayed out)
+- [x] Emits events for: edit, toggle done, delete
+- [x] Component tests created and passing
+- [x] Styled with Tailwind CSS
+- [x] Accessible (keyboard navigation, ARIA labels)
 
 ## Technical Implementation
 
