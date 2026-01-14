@@ -53,6 +53,7 @@
     "markdownlint-cli2": "^0.20.0",
     "prettier": "^3.7.4",
     "typescript": "^5.9.3",
+    "vite-plugin-pwa": "^1.2.0",
     "vitest": "^1.6.1",
     "vue-tsc": "^3.2.2"
   },
