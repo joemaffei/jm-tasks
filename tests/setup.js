@@ -1,5 +1,3 @@
-import { config } from "@vue/test-utils";
-
 // Global test setup
 //
 // This project uses both @vue/test-utils and @testing-library/vue:

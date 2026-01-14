@@ -12,8 +12,8 @@
     "build": "vite build",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "lint": "eslint . --ext .js,.jsx,.vue,.mjs",
-    "lint:fix": "eslint . --ext .js,.jsx,.vue,.mjs --fix",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.vue,.mjs",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx,.vue,.mjs --fix",
     "format": "prettier --write \"**/*.{js,jsx,vue,mjs,json,css,scss}\"",
     "lint:md": "markdownlint-cli2 \"**/*.md\" \"!.ai/**\" \"!node_modules/**\"",
     "lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"!.ai/**\" \"!node_modules/**\"",
@@ -36,6 +36,9 @@
     "@commitlint/config-conventional": "^20.3.1",
     "@testing-library/user-event": "^14.6.1",
     "@testing-library/vue": "^8.1.0",
+    "@types/node": "^25.0.8",
+    "@typescript-eslint/eslint-plugin": "^8.53.0",
+    "@typescript-eslint/parser": "^8.53.0",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/test-utils": "^2.4.6",
     "backlog.md": "^1.28.1",
@@ -48,7 +51,9 @@
     "lint-staged": "^16.2.7",
     "markdownlint-cli2": "^0.20.0",
     "prettier": "^3.7.4",
-    "vitest": "^1.6.1"
+    "typescript": "^5.9.3",
+    "vitest": "^1.6.1",
+    "vue-tsc": "^3.2.2"
   },
   "dependencies": {
     "@vitejs/plugin-vue": "^5.2.4",

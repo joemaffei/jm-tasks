@@ -189,7 +189,7 @@
 
 - **Linter**: ESLint
 - **Formatter**: Prettier
-- **Type Checking**: Consider TypeScript or JSDoc for type safety
+- **Type Checking**: TypeScript is required for production code. Tests may use TypeScript or JavaScript (optional)
 
 ### Version Control
 
@@ -352,7 +352,6 @@
 
 ### Potential Additions
 
-- TypeScript for type safety
 - Component library (if UI components needed)
 - Internationalization (i18n) if multi-language needed
 - Analytics integration
