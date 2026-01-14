@@ -65,10 +65,10 @@ const handleDelete = (taskId: number) => {
 };
 
 const handleDragEnd = (event: any) => {
-  const { oldIndex, newIndex, from, to } = event;
+  const { oldIndex, newIndex } = event;
 
   // If moved within the same section
-  if (from === to && oldIndex !== newIndex && oldIndex !== undefined && newIndex !== undefined) {
+  if (oldIndex !== newIndex && oldIndex !== undefined && newIndex !== undefined) {
     // Emit reorder event - parent will handle the actual reordering
     emit("reorder", {
       section: props.section,
@@ -81,11 +81,11 @@ const handleDragEnd = (event: any) => {
 const handleDragAdd = (event: any) => {
   const { newIndex, item } = event;
 
-  // The item.element contains the task data
-  if (item?.element && newIndex !== undefined) {
-    const task = item.element as Task;
+  // In Vue 3 vuedraggable, the element is directly in item.element
+  const task = item?.element as Task | undefined;
+  if (task && task.id && newIndex !== undefined) {
     emit("move", {
-      taskId: task.id!,
+      taskId: task.id,
       fromSection: task.section,
       toSection: props.section,
       newIndex,
@@ -113,7 +113,7 @@ const handleDragAdd = (event: any) => {
       ghost-class="opacity-50"
       chosen-class="border-blue-500"
       drag-class="cursor-grabbing"
-      @end="handleDragEnd"
+      @update="handleDragEnd"
       @add="handleDragAdd"
       class="flex flex-col gap-2"
     >
