@@ -1,28 +1,16 @@
 <script setup>
-// Simple Hello World component using Composition API
+// Main app component with router view
 </script>
 
 <template>
-  <div>
-    <h1>Hello World</h1>
+  <div id="app">
+    <router-view />
   </div>
 </template>
 
-<style scoped>
-div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+<style>
+#app {
   min-height: 100vh;
   margin: 0;
-}
-
-h1 {
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
-  font-size: 2rem;
-  color: #2c3e50;
 }
 </style>

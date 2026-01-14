@@ -1,7 +1,7 @@
 ---
 id: task-7
 title: Set up Vue Router
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-13'
 labels:
@@ -22,13 +22,13 @@ Install and configure Vue Router with a minimal route setup. Create a basic rout
 
 ## Acceptance Criteria
 
-- [ ] Vue Router installed
-- [ ] Router configuration file created
-- [ ] Router instance configured in main.js
-- [ ] Router-view added to App.vue
-- [ ] At least one route configured (e.g., home route)
-- [ ] Routing works in browser (can navigate)
-- [ ] Router test passes (if test created)
+- [x] Vue Router installed
+- [x] Router configuration file created
+- [x] Router instance configured in main.js
+- [x] Router-view added to App.vue
+- [x] At least one route configured (e.g., home route)
+- [x] Routing works in browser (can navigate)
+- [x] Router test passes (if test created)
 
 ## Technical Implementation
 
