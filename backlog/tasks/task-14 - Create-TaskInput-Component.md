@@ -1,7 +1,7 @@
 ---
 id: task-14
 title: Create TaskInput Component
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-15'
 labels:
@@ -22,16 +22,16 @@ Create a reusable TaskInput component for inline editing of task titles. The com
 
 ## Acceptance Criteria
 
-- [ ] `src/components/TaskInput.vue` created
-- [ ] Component accepts `modelValue` prop (v-model support)
-- [ ] Component emits `update:modelValue` event
-- [ ] Auto-focus on mount when `autoFocus` prop is true
-- [ ] Saves on blur event
-- [ ] Saves on Enter key press
-- [ ] Cancels on Esc key press (reverts to original value)
-- [ ] Component tests created and passing
-- [ ] Styled with Tailwind CSS
-- [ ] Accessible (keyboard navigation, focus management)
+- [x] `src/components/TaskInput.vue` created
+- [x] Component accepts `modelValue` prop (v-model support)
+- [x] Component emits `update:modelValue` event
+- [x] Auto-focus on mount when `autoFocus` prop is true
+- [x] Saves on blur event
+- [x] Saves on Enter key press
+- [x] Cancels on Esc key press (reverts to original value)
+- [x] Component tests created and passing
+- [x] Styled with Tailwind CSS
+- [x] Accessible (keyboard navigation, focus management)
 
 ## Technical Implementation
 
