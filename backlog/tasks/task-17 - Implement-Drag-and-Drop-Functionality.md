@@ -1,7 +1,7 @@
 ---
 id: task-17
 title: Implement Drag and Drop Functionality
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-15'
 labels:
@@ -23,14 +23,14 @@ Implement drag-and-drop functionality using vue-draggable to allow users to reor
 
 ## Acceptance Criteria
 
-- [ ] TaskListSection wraps TaskItem list in `<draggable>` component
-- [ ] `group="tasks"` prop configured for cross-section dragging
-- [ ] Within-section reordering works correctly
-- [ ] Cross-section moves work correctly
-- [ ] Task order updated in database after drag
-- [ ] Task section updated in database after cross-section move
-- [ ] Visual feedback during drag operations
-- [ ] Drag and drop tests created and passing
+- [x] TaskListSection wraps TaskItem list in `<draggable>` component
+- [x] `group="tasks"` prop configured for cross-section dragging
+- [x] Within-section reordering works correctly
+- [x] Cross-section moves work correctly
+- [x] Task order updated in database after drag
+- [x] Task section updated in database after cross-section move
+- [x] Visual feedback during drag operations
+- [x] Drag and drop tests created and passing
 
 ## Technical Implementation
 

@@ -7,6 +7,10 @@ import {
   getTasksBySection,
   getTask,
   getAllTasks,
+  reorderTask,
+  moveTaskToSection,
+  reorderTasks,
+  toggleTaskDone,
 } from "./taskService";
 import { db } from "@/storage/db";
 
@@ -222,5 +226,130 @@ describe("TaskService", () => {
       expect(tasks).toEqual([]);
     });
   });
-});
 
+  describe("reorderTask", () => {
+    it("updates task order", async () => {
+      const task = await createTask("today", "Task");
+      const updated = await reorderTask(task.id!, 5);
+
+      expect(updated.order).toBe(5);
+    });
+
+    it("throws error for non-existent task", async () => {
+      await expect(reorderTask(99999, 0)).rejects.toThrow(
+        "Task with id 99999 not found"
+      );
+    });
+  });
+
+  describe("moveTaskToSection", () => {
+    it("moves task to different section", async () => {
+      const task = await createTask("today", "Task");
+      const updated = await moveTaskToSection(task.id!, "this-week");
+
+      expect(updated.section).toBe("this-week");
+      expect(updated.order).toBe(0); // Should be first in new section
+    });
+
+    it("assigns correct order in target section", async () => {
+      await createTask("this-week", "Week Task 1");
+      await createTask("this-week", "Week Task 2");
+      const todayTask = await createTask("today", "Today Task");
+
+      const moved = await moveTaskToSection(todayTask.id!, "this-week");
+
+      expect(moved.section).toBe("this-week");
+      expect(moved.order).toBe(2); // Should be after existing tasks
+    });
+
+    it("throws error for non-existent task", async () => {
+      await expect(moveTaskToSection(99999, "today")).rejects.toThrow(
+        "Task with id 99999 not found"
+      );
+    });
+  });
+
+  describe("reorderTasks", () => {
+    it("reorders multiple tasks", async () => {
+      const task1 = await createTask("today", "Task 1");
+      const task2 = await createTask("today", "Task 2");
+      const task3 = await createTask("today", "Task 3");
+
+      await reorderTasks([
+        { id: task1.id!, order: 2 },
+        { id: task2.id!, order: 0 },
+        { id: task3.id!, order: 1 },
+      ]);
+
+      const tasks = await getTasksBySection("today");
+      const task1Updated = tasks.find(t => t.id === task1.id);
+      const task2Updated = tasks.find(t => t.id === task2.id);
+      const task3Updated = tasks.find(t => t.id === task3.id);
+
+      expect(task1Updated?.order).toBe(2);
+      expect(task2Updated?.order).toBe(0);
+      expect(task3Updated?.order).toBe(1);
+    });
+
+    it("handles empty array", async () => {
+      await expect(reorderTasks([])).resolves.not.toThrow();
+    });
+  });
+
+  describe("toggleTaskDone", () => {
+    it("marks task as done and stores originalSection", async () => {
+      const task = await createTask("today", "Test Task");
+      const updated = await toggleTaskDone(task.id!);
+
+      expect(updated.status).toBe("done");
+      expect(updated.originalSection).toBe("today");
+    });
+
+    it("reopens task and restores originalSection", async () => {
+      const task = await createTask("this-week", "Test Task");
+      const doneTask = await toggleTaskDone(task.id!);
+      expect(doneTask.status).toBe("done");
+      expect(doneTask.originalSection).toBe("this-week");
+
+      const reopened = await toggleTaskDone(task.id!);
+
+      expect(reopened.status).toBe("todo");
+      expect(reopened.section).toBe("this-week");
+      expect(reopened.originalSection).toBeUndefined();
+    });
+
+    it("defaults to 'today' when reopening task without originalSection", async () => {
+      const task = await createTask("soon", "Test Task");
+
+      // Manually set status to done without originalSection (simulating old data)
+      await updateTask(task.id!, {
+        status: "done",
+        originalSection: undefined,
+      });
+
+      const reopened = await toggleTaskDone(task.id!);
+
+      expect(reopened.status).toBe("todo");
+      expect(reopened.section).toBe("today");
+    });
+
+    it("assigns correct order when reopening to a section", async () => {
+      await createTask("this-week", "Existing Task 1");
+      await createTask("this-week", "Existing Task 2");
+      const task = await createTask("this-week", "Test Task");
+
+      const doneTask = await toggleTaskDone(task.id!);
+      const reopened = await toggleTaskDone(task.id!);
+
+      expect(reopened.section).toBe("this-week");
+      // Should be after existing tasks in this-week (order 0, 1, so new order is 2)
+      expect(reopened.order).toBe(2);
+    });
+
+    it("throws error for non-existent task", async () => {
+      await expect(toggleTaskDone(99999)).rejects.toThrow(
+        "Task with id 99999 not found"
+      );
+    });
+  });
+});

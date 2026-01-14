@@ -187,3 +187,72 @@ export async function getAllTasks(): Promise<Task[]> {
   }
 }
 
+/**
+ * Reorder a task within its section
+ * @param id - Task ID
+ * @param newOrder - New order value
+ * @returns Promise resolving to the updated task
+ */
+export async function reorderTask(
+  id: number,
+  newOrder: number
+): Promise<Task> {
+  try {
+    return await updateTask(id, { order: newOrder });
+  } catch (error) {
+    console.error("Error reordering task:", error);
+    throw error;
+  }
+}
+
+/**
+ * Move a task to a different section
+ * @param id - Task ID
+ * @param newSection - Target section identifier
+ * @returns Promise resolving to the updated task
+ */
+export async function moveTaskToSection(
+  id: number,
+  newSection: "today" | "this-week" | "soon" | "someday"
+): Promise<Task> {
+  try {
+    // Get current max order in target section
+    const existingTasks = await db.tasks
+      .where("section")
+      .equals(newSection)
+      .toArray();
+
+    const maxOrder =
+      existingTasks.length > 0
+        ? Math.max(...existingTasks.map(t => t.order ?? -1))
+        : -1;
+
+    // Update task's section and order
+    return await updateTask(id, {
+      section: newSection,
+      order: maxOrder + 1,
+    });
+  } catch (error) {
+    console.error("Error moving task to section:", error);
+    throw error;
+  }
+}
+
+/**
+ * Reorder multiple tasks in batch
+ * @param tasks - Array of task id and order pairs
+ * @returns Promise resolving when all tasks are updated
+ */
+export async function reorderTasks(
+  tasks: { id: number; order: number }[]
+): Promise<void> {
+  try {
+    // Use Promise.all for parallel updates
+    await Promise.all(
+      tasks.map(({ id, order }) => updateTask(id, { order }))
+    );
+  } catch (error) {
+    console.error("Error reordering tasks:", error);
+    throw error;
+  }
+}
