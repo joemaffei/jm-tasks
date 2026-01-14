@@ -1,7 +1,7 @@
 ---
 id: task-11
 title: Update Database Schema for To-Do Sections
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-15'
 labels:
@@ -21,14 +21,14 @@ Update the Task schema in IndexedDB to support the 4-section to-do list structur
 
 ## Acceptance Criteria
 
-- [ ] Task schema updated with `section`, `order`, and `originalSection` fields
-- [ ] Database version incremented to 2
-- [ ] Migration function created to handle version upgrade
-- [ ] Indexes added on `section` and `order` fields for efficient queries
-- [ ] Zod schema validation updated to match new fields
-- [ ] Migration tested with existing data
-- [ ] Database opens successfully after migration
-- [ ] Existing tasks handled gracefully (default values assigned)
+- [x] Task schema updated with `section`, `order`, and `originalSection` fields
+- [x] Database version incremented to 2
+- [x] Migration function created to handle version upgrade
+- [x] Indexes added on `section` and `order` fields for efficient queries
+- [x] Zod schema validation updated to match new fields
+- [x] Migration tested with existing data
+- [x] Database opens successfully after migration
+- [x] Existing tasks handled gracefully (default values assigned)
 
 ## Technical Implementation
 

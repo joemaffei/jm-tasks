@@ -7,6 +7,9 @@ export const taskSchema = z.object({
   title: z.string(),
   description: z.string().optional(),
   status: z.enum(["todo", "in-progress", "done"]),
+  section: z.enum(["today", "this-week", "soon", "someday"]),
+  order: z.number(),
+  originalSection: z.string().optional(),
   createdAt: z.date(),
   updatedAt: z.date(),
   dueDate: z.date().optional(),
@@ -22,17 +25,29 @@ class TasksDatabase extends Dexie {
   constructor() {
     super("TasksDatabase");
 
-    // Extract indexed field names from schema (excluding description)
-    const allFields = Object.keys(taskSchema.shape);
-    const indexedFields = allFields
-      .filter(key => key !== "description")
-      .map(key => (key === "id" ? `++${key}` : key))
-      .join(", ");
-
-    // Define schema
+    // Version 1: Original schema without section/order fields
     this.version(1).stores({
-      tasks: indexedFields, // Field names derived from Zod schema
+      tasks: "++id, title, status, createdAt, updatedAt, dueDate",
     });
+
+    // Version 2: Add section, order, and originalSection fields
+    this.version(2)
+      .stores({
+        tasks: "++id, title, status, section, order, createdAt, updatedAt, dueDate",
+      })
+      .upgrade(async (tx) => {
+        // Migration: Update all existing tasks with default values
+        const tasks = await tx.table("tasks").toCollection().toArray();
+
+        for (let i = 0; i < tasks.length; i++) {
+          const task = tasks[i];
+          await tx.table("tasks").update(task.id, {
+            section: "today", // Default section for existing tasks
+            order: i, // Sequential order based on array index
+            // originalSection left undefined for existing tasks
+          });
+        }
+      });
   }
 }
 

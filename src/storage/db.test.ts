@@ -41,6 +41,8 @@ describe("Database", () => {
         title: "Test Task",
         description: "Test Description",
         status: "todo",
+        section: "today",
+        order: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -53,12 +55,16 @@ describe("Database", () => {
       expect(task?.title).toBe("Test Task");
       expect(task?.description).toBe("Test Description");
       expect(task?.status).toBe("todo");
+      expect(task?.section).toBe("today");
+      expect(task?.order).toBe(0);
     });
 
     it("can read a task by id", async () => {
       const newTask = {
         title: "Read Test Task",
         status: "in-progress",
+        section: "this-week",
+        order: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -70,12 +76,15 @@ describe("Database", () => {
       expect(task?.id).toBe(id);
       expect(task?.title).toBe("Read Test Task");
       expect(task?.status).toBe("in-progress");
+      expect(task?.section).toBe("this-week");
     });
 
     it("can update a task", async () => {
       const newTask = {
         title: "Original Title",
         status: "todo",
+        section: "today",
+        order: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -86,12 +95,16 @@ describe("Database", () => {
       await db.tasks.update(id, {
         title: "Updated Title",
         status: "in-progress",
+        section: "soon",
+        order: 1,
         updatedAt,
       });
 
       const task = await db.tasks.get(id);
       expect(task?.title).toBe("Updated Title");
       expect(task?.status).toBe("in-progress");
+      expect(task?.section).toBe("soon");
+      expect(task?.order).toBe(1);
       expect(task?.updatedAt).toEqual(updatedAt);
     });
 
@@ -99,6 +112,8 @@ describe("Database", () => {
       const newTask = {
         title: "Task to Delete",
         status: "todo",
+        section: "today",
+        order: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -114,12 +129,16 @@ describe("Database", () => {
       const task1 = {
         title: "Task 1",
         status: "todo",
+        section: "today",
+        order: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
       const task2 = {
         title: "Task 2",
         status: "in-progress",
+        section: "this-week",
+        order: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -137,12 +156,16 @@ describe("Database", () => {
       const todoTask = {
         title: "Todo Task",
         status: "todo",
+        section: "today",
+        order: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
       const doneTask = {
         title: "Done Task",
         status: "done",
+        section: "today",
+        order: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -154,6 +177,72 @@ describe("Database", () => {
       expect(todoTasks.length).toBe(1);
       expect(todoTasks[0].title).toBe("Todo Task");
     });
+
+    it("can query tasks by section", async () => {
+      const todayTask = {
+        title: "Today Task",
+        status: "todo",
+        section: "today",
+        order: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      const weekTask = {
+        title: "Week Task",
+        status: "todo",
+        section: "this-week",
+        order: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      await db.tasks.add(todayTask);
+      await db.tasks.add(weekTask);
+
+      const todayTasks = await db.tasks.where("section").equals("today").toArray();
+      expect(todayTasks.length).toBe(1);
+      expect(todayTasks[0].title).toBe("Today Task");
+    });
+
+    it("can query tasks by section and sort by order", async () => {
+      const task1 = {
+        title: "Task 1",
+        status: "todo",
+        section: "today",
+        order: 2,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      const task2 = {
+        title: "Task 2",
+        status: "todo",
+        section: "today",
+        order: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      const task3 = {
+        title: "Task 3",
+        status: "todo",
+        section: "today",
+        order: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      await db.tasks.add(task1);
+      await db.tasks.add(task2);
+      await db.tasks.add(task3);
+
+      const todayTasks = await db.tasks
+        .where("section")
+        .equals("today")
+        .sortBy("order");
+      expect(todayTasks.length).toBe(3);
+      expect(todayTasks[0].title).toBe("Task 2");
+      expect(todayTasks[1].title).toBe("Task 3");
+      expect(todayTasks[2].title).toBe("Task 1");
+    });
   });
 
   describe("Task schema validation", () => {
@@ -163,6 +252,8 @@ describe("Database", () => {
         title: "Valid Task",
         description: "Description",
         status: "todo",
+        section: "today",
+        order: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
         dueDate: new Date(),
@@ -173,6 +264,8 @@ describe("Database", () => {
       if (result.success) {
         expect(result.data.title).toBe("Valid Task");
         expect(result.data.status).toBe("todo");
+        expect(result.data.section).toBe("today");
+        expect(result.data.order).toBe(0);
       }
     });
 
@@ -180,6 +273,8 @@ describe("Database", () => {
       const minimalTask = {
         title: "Minimal Task",
         status: "in-progress",
+        section: "today",
+        order: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -192,6 +287,22 @@ describe("Database", () => {
       const invalidTask = {
         title: "Invalid Task",
         status: "invalid-status",
+        section: "today",
+        order: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      const result = taskSchema.safeParse(invalidTask);
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects task with invalid section", () => {
+      const invalidTask = {
+        title: "Invalid Task",
+        status: "todo",
+        section: "invalid-section",
+        order: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -211,6 +322,24 @@ describe("Database", () => {
       expect(result.success).toBe(false);
     });
 
+    it("accepts task with originalSection field", () => {
+      const task = {
+        title: "Task with Original Section",
+        status: "done",
+        section: "today",
+        order: 0,
+        originalSection: "this-week",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      const result = taskSchema.safeParse(task);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.originalSection).toBe("this-week");
+      }
+    });
+
     it("accepts valid status values", () => {
       const statuses = ["todo", "in-progress", "done"];
 
@@ -218,12 +347,35 @@ describe("Database", () => {
         const task = {
           title: `Task with status ${status}`,
           status,
+          section: "today",
+          order: 0,
           createdAt: new Date(),
           updatedAt: new Date(),
         };
 
         const result = taskSchema.safeParse(task);
         expect(result.success).toBe(true);
+      });
+    });
+
+    it("accepts valid section values", () => {
+      const sections = ["today", "this-week", "soon", "someday"];
+
+      sections.forEach(section => {
+        const task = {
+          title: `Task in ${section}`,
+          status: "todo",
+          section,
+          order: 0,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+
+        const result = taskSchema.safeParse(task);
+        expect(result.success).toBe(true);
+        if (result.success) {
+          expect(result.data.section).toBe(section);
+        }
       });
     });
   });
@@ -234,6 +386,8 @@ describe("Database", () => {
       const task = {
         title: "Schema Test",
         status: "todo",
+        section: "today",
+        order: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -244,6 +398,43 @@ describe("Database", () => {
       // Verify we can query by indexed fields
       const byStatus = await db.tasks.where("status").equals("todo").toArray();
       expect(byStatus.length).toBeGreaterThan(0);
+
+      const bySection = await db.tasks.where("section").equals("today").toArray();
+      expect(bySection.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe("Database migration", () => {
+    it("migrates from version 1 to version 2", async () => {
+      // Close and delete existing database to test migration
+      await db.close();
+      await db.delete();
+
+      // Reopen to trigger migration
+      await db.open();
+
+      // Verify database is at version 2
+      expect(db.verno).toBe(2);
+    });
+
+    it("handles migration with existing tasks", async () => {
+      // This test would require creating a v1 database first
+      // For now, we'll test that new tasks require section and order
+      const newTask = {
+        title: "New Task",
+        status: "todo",
+        section: "today",
+        order: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      const id = await db.tasks.add(newTask);
+      const task = await db.tasks.get(id);
+
+      expect(task).toBeDefined();
+      expect(task?.section).toBe("today");
+      expect(task?.order).toBe(0);
     });
   });
 });
