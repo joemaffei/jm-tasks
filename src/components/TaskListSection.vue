@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import draggable from "vuedraggable";
+import { computed } from "vue";
 import TaskItem from "./TaskItem.vue";
 import { createTask } from "@/services/taskService";
 import type { Task } from "@/storage/db";
@@ -15,8 +14,6 @@ interface Emits {
   (e: "update-task", task: Task): void;
   (e: "toggle-done", taskId: number): void;
   (e: "delete-task", taskId: number): void;
-  (e: "reorder", data: { section: string; oldIndex: number; newIndex: number }): void;
-  (e: "move", data: { taskId: number; fromSection: string; toSection: string; newIndex: number }): void;
 }
 
 const props = defineProps<Props>();
@@ -32,15 +29,10 @@ const sectionTitle = computed(() => {
   return titles[props.section];
 });
 
-const filteredTasks = computed({
-  get: () => {
-    return props.tasks
-      .filter(task => task.section === props.section)
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  },
-  set: () => {
-    // This is handled by drag events, not direct assignment
-  },
+const filteredTasks = computed(() => {
+  return props.tasks
+    .filter(task => task.section === props.section)
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 });
 
 const handleNewTask = async () => {
@@ -63,35 +55,6 @@ const handleToggleDone = (taskId: number) => {
 const handleDelete = (taskId: number) => {
   emit("delete-task", taskId);
 };
-
-const handleDragEnd = (event: any) => {
-  const { oldIndex, newIndex } = event;
-
-  // If moved within the same section
-  if (oldIndex !== newIndex && oldIndex !== undefined && newIndex !== undefined) {
-    // Emit reorder event - parent will handle the actual reordering
-    emit("reorder", {
-      section: props.section,
-      oldIndex,
-      newIndex,
-    });
-  }
-};
-
-const handleDragAdd = (event: any) => {
-  const { newIndex, item } = event;
-
-  // In Vue 3 vuedraggable, the element is directly in item.element
-  const task = item?.element as Task | undefined;
-  if (task && task.id && newIndex !== undefined) {
-    emit("move", {
-      taskId: task.id,
-      fromSection: task.section,
-      toSection: props.section,
-      newIndex,
-    });
-  }
-};
 </script>
 
 <template>
@@ -105,28 +68,16 @@ const handleDragAdd = (event: any) => {
         New Task
       </button>
     </div>
-    <draggable
-      :model-value="filteredTasks"
-      :group="{ name: 'tasks', pull: true, put: true }"
-      :item-key="(task: Task) => task.id!"
-      :animation="200"
-      ghost-class="opacity-50"
-      chosen-class="border-blue-500"
-      drag-class="cursor-grabbing"
-      @update="handleDragEnd"
-      @add="handleDragAdd"
-      class="flex flex-col gap-2"
-    >
-      <template #item="{ element: task }">
-        <TaskItem
-          :key="task.id"
-          :task="task"
-          @update:task="handleTaskUpdate"
-          @toggle-done="handleToggleDone"
-          @delete="handleDelete"
-        />
-      </template>
-    </draggable>
+    <div class="flex flex-col gap-2">
+      <TaskItem
+        v-for="task in filteredTasks"
+        :key="task.id"
+        :task="task"
+        @update:task="handleTaskUpdate"
+        @toggle-done="handleToggleDone"
+        @delete="handleDelete"
+      />
+    </div>
     <p v-if="filteredTasks.length === 0" class="text-gray-400 text-sm italic">
       No tasks in this section
     </p>

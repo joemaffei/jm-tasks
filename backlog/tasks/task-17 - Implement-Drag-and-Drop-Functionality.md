@@ -1,7 +1,7 @@
 ---
 id: task-17
 title: Implement Drag and Drop Functionality
-status: Done
+status: To Do
 assignee: []
 created_date: '2026-01-15'
 labels:

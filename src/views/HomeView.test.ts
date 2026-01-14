@@ -1,17 +1,9 @@
 import "fake-indexeddb/auto";
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { mount } from "@vue/test-utils";
 import HomeView from "./HomeView.vue";
 import { db } from "@/storage/db";
 import { createTask, getAllTasks } from "@/services/taskService";
-
-// Mock vuedraggable to avoid test environment issues
-vi.mock("vuedraggable", () => ({
-  default: {
-    name: "draggable",
-    template: "<div><slot /></div>",
-  },
-}));
 
 describe("HomeView", () => {
   beforeEach(async () => {
@@ -138,57 +130,5 @@ describe("HomeView", () => {
 
     const updatedTask = await db.tasks.get(task.id!);
     expect(updatedTask?.status).toBe("done");
-  });
-
-  it("handles task reordering within section", async () => {
-    const task1 = await createTask("today", "Task 1");
-    const task2 = await createTask("today", "Task 2");
-    const task3 = await createTask("today", "Task 3");
-
-    const wrapper = mount(HomeView);
-    await new Promise(resolve => setTimeout(resolve, 200));
-
-    const taskListSections = wrapper.findAllComponents({ name: "TaskListSection" });
-    expect(taskListSections.length).toBeGreaterThan(0);
-    const todaySection = taskListSections[0];
-
-    // Simulate reordering: move task from index 0 to index 2
-    await todaySection.vm.$emit("reorder", {
-      section: "today",
-      oldIndex: 0,
-      newIndex: 2,
-    });
-
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-    const tasks = await db.tasks
-      .where("section")
-      .equals("today")
-      .sortBy("order");
-
-    // Verify tasks are reordered
-    expect(tasks.length).toBe(3);
-  });
-
-  it("handles cross-section task moves", async () => {
-    const task = await createTask("today", "Task to Move");
-    const wrapper = mount(HomeView);
-    await new Promise(resolve => setTimeout(resolve, 200));
-
-    const taskListSections = wrapper.findAllComponents({ name: "TaskListSection" });
-    expect(taskListSections.length).toBeGreaterThan(1);
-    const weekSection = taskListSections[1]; // this-week section
-
-    await weekSection.vm.$emit("move", {
-      taskId: task.id!,
-      fromSection: "today",
-      toSection: "this-week",
-      newIndex: 0,
-    });
-
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-    const movedTask = await db.tasks.get(task.id!);
-    expect(movedTask?.section).toBe("this-week");
   });
 });

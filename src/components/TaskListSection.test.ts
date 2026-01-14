@@ -1,17 +1,9 @@
 import "fake-indexeddb/auto";
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { mount } from "@vue/test-utils";
 import TaskListSection from "./TaskListSection.vue";
 import type { Task } from "@/storage/db";
 import { db } from "@/storage/db";
-
-// Mock vuedraggable to avoid test environment issues
-vi.mock("vuedraggable", () => ({
-  default: {
-    name: "draggable",
-    template: "<div><slot /></div>",
-  },
-}));
 
 const createTestTask = (overrides?: Partial<Task>): Task => ({
   id: Math.floor(Math.random() * 10000),
