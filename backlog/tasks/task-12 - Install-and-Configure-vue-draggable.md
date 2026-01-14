@@ -1,7 +1,7 @@
 ---
 id: task-12
 title: Install and Configure vue-draggable
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-15'
 labels:
@@ -21,11 +21,11 @@ Install the vuedraggable package to enable drag-and-drop functionality for reord
 
 ## Acceptance Criteria
 
-- [ ] `vuedraggable` package installed
-- [ ] Package added to `package.json` dependencies
-- [ ] TypeScript types available (verify no type errors)
-- [ ] Package can be imported in Vue components
-- [ ] Basic import test passes
+- [x] `vuedraggable` package installed
+- [x] Package added to `package.json` dependencies
+- [x] TypeScript types available (verify no type errors)
+- [x] Package can be imported in Vue components
+- [x] Basic import test passes
 
 ## Technical Implementation
 
