@@ -1,7 +1,7 @@
 ---
 id: task-8
 title: Set up IndexedDB Dexie Database Schema
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-13'
 labels:
@@ -22,12 +22,12 @@ Install Dexie.js and set up the basic database schema for tasks. Create a databa
 
 ## Acceptance Criteria
 
-- [ ] Dexie.js installed
-- [ ] Database instance created
-- [ ] Tasks table schema defined with required fields
-- [ ] Database can be opened successfully
-- [ ] Database initialization test passes (if created)
-- [ ] Database file created in browser (verifiable in DevTools)
+- [x] Dexie.js installed
+- [x] Database instance created
+- [x] Tasks table schema defined with required fields
+- [x] Database can be opened successfully
+- [x] Database initialization test passes (if created)
+- [x] Database file created in browser (verifiable in DevTools)
 
 ## Technical Implementation
 
