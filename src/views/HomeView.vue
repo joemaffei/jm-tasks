@@ -3,35 +3,11 @@
 </script>
 
 <template>
-  <div class="home">
-    <h1>Home</h1>
-    <p>Welcome to the task management application.</p>
+  <div class="p-8 max-w-3xl mx-auto">
+    <h1 class="text-3xl font-semibold text-slate-800 mb-4">Home</h1>
+    <p class="text-lg text-slate-600">Welcome to the task management application.</p>
+    <div class="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+      <p class="text-sm text-blue-800">✅ Tailwind CSS is working! This blue box uses Tailwind utility classes.</p>
+    </div>
   </div>
 </template>
-
-<style scoped>
-.home {
-  padding: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-h1 {
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
-  font-size: 2rem;
-  color: #2c3e50;
-  margin-bottom: 1rem;
-}
-
-p {
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
-  font-size: 1rem;
-  color: #555;
-}
-</style>

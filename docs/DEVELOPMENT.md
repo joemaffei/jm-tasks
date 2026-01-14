@@ -335,6 +335,95 @@ jest.mock('./taskService'); // Don't mock what you're testing!
 - Consistent formatting across the codebase
 - Auto-format on save (IDE configuration)
 
+## Styling with Tailwind CSS
+
+This project uses **Tailwind CSS** for styling. Tailwind is a utility-first CSS framework that enables rapid UI development with consistent design patterns.
+
+### Configuration
+
+- **Config File**: `tailwind.config.js` - Configure content paths, theme, and plugins
+- **PostCSS Config**: `postcss.config.js` - Processes Tailwind and Autoprefixer
+- **Main CSS**: `src/style.css` - Contains Tailwind directives and custom base styles
+
+### Usage Guidelines
+
+#### Utility Classes
+
+Use Tailwind utility classes directly in Vue component templates:
+
+```vue
+<template>
+  <div class="p-4 bg-blue-50 rounded-lg">
+    <h1 class="text-2xl font-bold text-slate-800">Title</h1>
+    <p class="text-slate-600">Content</p>
+  </div>
+</template>
+```
+
+#### Responsive Design
+
+Use Tailwind's responsive prefixes for mobile-first design:
+
+```vue
+<div class="text-sm md:text-base lg:text-lg">
+  Responsive text sizing
+</div>
+```
+
+#### Component Extraction
+
+When utility class combinations are repeated, extract them into reusable components:
+
+```vue
+<!-- Instead of repeating: -->
+<button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+  Button
+</button>
+
+<!-- Create a Button component -->
+```
+
+#### Custom Styles
+
+- **Base Styles**: Add custom base styles in `src/style.css` using `@layer base`
+- **Component Styles**: Use `@layer components` for reusable component classes
+- **Utilities**: Use `@layer utilities` for custom utility classes
+
+#### VS Code IntelliSense
+
+Install the **Tailwind CSS IntelliSense** extension for VS Code to get:
+
+- Autocomplete for Tailwind classes
+- Linting for invalid class names
+- Hover previews of generated CSS
+
+**Extension**: [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+
+### Best Practices
+
+1. **Prefer Utility Classes**: Use Tailwind utilities over custom CSS when possible
+2. **Mobile-First**: Design for mobile first, then enhance for larger screens
+3. **Consistent Spacing**: Use Tailwind's spacing scale (p-4, m-2, gap-6, etc.)
+4. **Semantic Colors**: Use Tailwind's color palette (slate, blue, green, etc.)
+5. **Extract Components**: When utility combinations repeat, create components
+6. **Custom Theme**: Extend Tailwind theme in `tailwind.config.js` for project-specific values
+
+### Content Purging
+
+Tailwind automatically purges unused styles in production builds. Ensure all files using Tailwind classes are included in `tailwind.config.js` content paths:
+
+```js
+content: [
+  "./index.html",
+  "./src/**/*.{vue,js,ts,jsx,tsx}",
+]
+```
+
+### Resources
+
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [Tailwind CSS IntelliSense Extension](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+
 ## Dependencies
 
 ### Adding Dependencies
