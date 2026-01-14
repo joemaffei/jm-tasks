@@ -5,6 +5,14 @@ import TaskListSection from "./TaskListSection.vue";
 import type { Task } from "@/storage/db";
 import { db } from "@/storage/db";
 
+// Mock vuedraggable to avoid test environment issues
+vi.mock("vuedraggable", () => ({
+  default: {
+    name: "draggable",
+    template: "<div><slot /></div>",
+  },
+}));
+
 const createTestTask = (overrides?: Partial<Task>): Task => ({
   id: Math.floor(Math.random() * 10000),
   title: "Test Task",
@@ -192,4 +200,3 @@ describe("TaskListSection", () => {
     expect(wrapper.emitted("delete-task")?.[0]).toEqual([task.id]);
   });
 });
-

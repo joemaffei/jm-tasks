@@ -62,4 +62,3 @@ const handleDelete = () => {
     </button>
   </div>
 </template>
-

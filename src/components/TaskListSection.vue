@@ -80,7 +80,7 @@ const handleDragEnd = (event: any) => {
 
 const handleDragAdd = (event: any) => {
   const { newIndex, item } = event;
-  
+
   // The item.element contains the task data
   if (item?.element && newIndex !== undefined) {
     const task = item.element as Task;

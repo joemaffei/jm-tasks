@@ -137,4 +137,3 @@ describe("TaskInput", () => {
     expect(selectSpy).toHaveBeenCalled();
   });
 });
-

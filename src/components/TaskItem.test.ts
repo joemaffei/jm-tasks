@@ -148,4 +148,3 @@ describe("TaskItem", () => {
     expect(root.classes()).not.toContain("opacity-60");
   });
 });
-

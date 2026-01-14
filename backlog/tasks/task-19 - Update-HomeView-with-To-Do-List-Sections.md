@@ -1,7 +1,7 @@
 ---
 id: task-19
 title: Update HomeView with To-Do List Sections
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-15'
 labels:
@@ -23,16 +23,16 @@ Update HomeView to display the four to-do list sections (Today, This Week, Soon,
 
 ## Acceptance Criteria
 
-- [ ] HomeView displays 4 TaskListSection components
-- [ ] Sections stacked vertically (flex column layout)
-- [ ] Section order: Today (top), This Week, Soon, Someday (bottom)
-- [ ] Reactive task state management implemented
-- [ ] Tasks load from database on mount
-- [ ] Task operations (create, update, delete, toggle done) work
-- [ ] Drag and drop works between sections
-- [ ] All features integrated and working together
-- [ ] Styled with Tailwind CSS
-- [ ] Integration tests pass
+- [x] HomeView displays 4 TaskListSection components
+- [x] Sections stacked vertically (flex column layout)
+- [x] Section order: Today (top), This Week, Soon, Someday (bottom)
+- [x] Reactive task state management implemented
+- [x] Tasks load from database on mount
+- [x] Task operations (create, update, delete, toggle done) work
+- [x] Drag and drop works between sections
+- [x] All features integrated and working together
+- [x] Styled with Tailwind CSS
+- [x] Integration tests pass
 
 ## Technical Implementation
 

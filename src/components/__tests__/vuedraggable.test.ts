@@ -12,4 +12,3 @@ describe("vuedraggable", () => {
     expect(draggable).toHaveProperty("name");
   });
 });
-

@@ -1,7 +1,7 @@
 ---
 id: task-20
 title: Add Tests for To-Do List Feature
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-15'
 labels:
@@ -20,14 +20,14 @@ Add comprehensive integration tests for the to-do list feature to ensure all fun
 
 ## Acceptance Criteria
 
-- [ ] Integration tests for task creation flow
-- [ ] Integration tests for drag and drop (within section and cross-section)
-- [ ] Integration tests for done/reopen functionality
-- [ ] Integration tests for section moves
-- [ ] Database migration tests
-- [ ] All acceptance criteria from previous tasks covered by tests
-- [ ] Test coverage meets project standards
-- [ ] All tests pass
+- [x] Integration tests for task creation flow
+- [x] Integration tests for drag and drop (within section and cross-section)
+- [x] Integration tests for done/reopen functionality
+- [x] Integration tests for section moves
+- [x] Database migration tests
+- [x] All acceptance criteria from previous tasks covered by tests
+- [x] Test coverage meets project standards
+- [x] All tests pass
 
 ## Technical Implementation
 
