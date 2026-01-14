@@ -10,7 +10,7 @@ import {
   reorderTask,
   moveTaskToSection,
   reorderTasks,
-  toggleTaskDone,
+  toggleTaskDone, // Added in task-18
 } from "./taskService";
 import { db } from "@/storage/db";
 

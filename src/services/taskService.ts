@@ -256,3 +256,58 @@ export async function reorderTasks(
     throw error;
   }
 }
+
+/**
+ * Toggle task done status
+ * When marking done: stores current section in originalSection
+ * When reopening: restores section from originalSection (or defaults to "today")
+ * @param id - Task ID
+ * @returns Promise resolving to the updated task
+ */
+export async function toggleTaskDone(id: number): Promise<Task> {
+  try {
+    const task = await db.tasks.get(id);
+    if (!task) {
+      throw new Error(`Task with id ${id} not found`);
+    }
+
+    let updates: Partial<Task>;
+
+    if (task.status === "done") {
+      // Reopening: restore from originalSection or default to "today"
+      const targetSection =
+        (task.originalSection as "today" | "this-week" | "soon" | "someday") ||
+        "today";
+
+      // Get current max order in target section, excluding the current task
+      const existingTasks = await db.tasks
+        .where("section")
+        .equals(targetSection)
+        .filter(t => t.id !== id)
+        .toArray();
+
+      const maxOrder =
+        existingTasks.length > 0
+          ? Math.max(...existingTasks.map(t => t.order ?? -1))
+          : -1;
+
+      updates = {
+        status: "todo",
+        section: targetSection,
+        order: maxOrder + 1,
+        originalSection: undefined, // Clear originalSection after restore
+      };
+    } else {
+      // Marking done: store current section in originalSection
+      updates = {
+        status: "done",
+        originalSection: task.section,
+      };
+    }
+
+    return await updateTask(id, updates);
+  } catch (error) {
+    console.error("Error toggling task done status:", error);
+    throw error;
+  }
+}

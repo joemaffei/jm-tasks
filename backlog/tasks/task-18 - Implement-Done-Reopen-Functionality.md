@@ -1,7 +1,7 @@
 ---
 id: task-18
 title: Implement Done/Reopen Functionality
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-15'
 labels:
@@ -22,14 +22,14 @@ Implement functionality to mark tasks as done and reopen completed tasks. When m
 
 ## Acceptance Criteria
 
-- [ ] `toggleTaskDone()` method implemented in TaskService
-- [ ] When marking done: store current section in `originalSection` field
-- [ ] When marking done: set status to "done"
-- [ ] When reopening: restore section from `originalSection` field
-- [ ] When reopening: set status to "todo"
-- [ ] TaskItem checkbox toggles done status
-- [ ] Visual styling applied to done tasks
-- [ ] Done/reopen functionality tested
+- [x] `toggleTaskDone()` method implemented in TaskService
+- [x] When marking done: store current section in `originalSection` field
+- [x] When marking done: set status to "done"
+- [x] When reopening: restore section from `originalSection` field
+- [x] When reopening: set status to "todo"
+- [x] TaskItem checkbox toggles done status
+- [x] Visual styling applied to done tasks
+- [x] Done/reopen functionality tested
 
 ## Technical Implementation
 
