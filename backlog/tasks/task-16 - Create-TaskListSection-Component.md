@@ -1,7 +1,7 @@
 ---
 id: task-16
 title: Create TaskListSection Component
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-15'
 labels:
@@ -23,16 +23,16 @@ Create a TaskListSection component that displays one of the four to-do sections 
 
 ## Acceptance Criteria
 
-- [ ] `src/components/TaskListSection.vue` created
-- [ ] Component accepts `section` prop (section identifier)
-- [ ] Displays section title
-- [ ] "New Task" button at top
-- [ ] Renders list of TaskItem components for tasks in section
-- [ ] Filters tasks by section
-- [ ] Handles task creation when "New Task" clicked
-- [ ] Handles task updates from TaskItem events
-- [ ] Component tests created and passing
-- [ ] Styled with Tailwind CSS
+- [x] `src/components/TaskListSection.vue` created
+- [x] Component accepts `section` prop (section identifier)
+- [x] Displays section title
+- [x] "New Task" button at top
+- [x] Renders list of TaskItem components for tasks in section
+- [x] Filters tasks by section
+- [x] Handles task creation when "New Task" clicked
+- [x] Handles task updates from TaskItem events
+- [x] Component tests created and passing
+- [x] Styled with Tailwind CSS
 
 ## Technical Implementation
 
