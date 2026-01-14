@@ -142,6 +142,7 @@ The project follows a standard Vue.js application structure:
   - Tests must import and test actual production code (not mocks of the code being tested)
   - Avoid mocking whenever possible - prefer real implementations
   - Only mock external dependencies when necessary (APIs, file system, etc.)
+- **Atomic Tasks Principle**: Similar to atomic commits, tasks should be broken down to the smallest kernel of progress. Each task should represent the smallest meaningful step forward so progress can be assessed and course-corrected early. Avoid creating large, comprehensive tasks that try to accomplish too much at once. When creating tasks, ask: "What's the smallest step that provides value and allows assessment of direction?"
 
 ## Related Documentation
 
