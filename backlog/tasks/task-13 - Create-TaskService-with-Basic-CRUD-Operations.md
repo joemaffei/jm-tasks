@@ -1,7 +1,7 @@
 ---
 id: task-13
 title: Create TaskService with Basic CRUD Operations
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-15'
 labels:
@@ -21,15 +21,15 @@ Create a TaskService module that provides business logic and data access methods
 
 ## Acceptance Criteria
 
-- [ ] `src/services/taskService.ts` created
-- [ ] `createTask()` method implemented
-- [ ] `updateTask()` method implemented
-- [ ] `deleteTask()` method implemented
-- [ ] `getTasksBySection()` method implemented
-- [ ] All methods handle IndexedDB operations correctly
-- [ ] Error handling implemented for all operations
-- [ ] Unit tests created for all service methods
-- [ ] Tests pass successfully
+- [x] `src/services/taskService.ts` created
+- [x] `createTask()` method implemented
+- [x] `updateTask()` method implemented
+- [x] `deleteTask()` method implemented
+- [x] `getTasksBySection()` method implemented
+- [x] All methods handle IndexedDB operations correctly
+- [x] Error handling implemented for all operations
+- [x] Unit tests created for all service methods
+- [x] Tests pass successfully
 
 ## Technical Implementation
 
