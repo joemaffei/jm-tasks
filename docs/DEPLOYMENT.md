@@ -7,7 +7,7 @@ integration with Cloudflare's ecosystem.
 
 ## Domain Configuration
 
-- **Production Domain**: tasks.joemaffei.com
+- **Production Domain**: tasks.joemaffei.dev
 - **DNS**: Managed through Cloudflare
 - **SSL/TLS**: Automatic via Cloudflare (Always On HTTPS)
 
@@ -126,7 +126,7 @@ Git Push → Cloudflare Pages Build → Deploy to Production
 ### Production
 
 - Main branch → Production deployment
-- tasks.joemaffei.com domain
+- tasks.joemaffei.dev domain
 - Production environment variables
 
 ### Preview/Staging

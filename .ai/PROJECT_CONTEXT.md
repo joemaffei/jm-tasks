@@ -3,7 +3,7 @@
 ## Purpose
 
 jm-tasks is a personal task management Progressive Web Application (PWA) designed to help Joe Maffei organize and
-manage tasks efficiently. The application will be accessible at tasks.joemaffei.com and is built with Vue.js,
+manage tasks efficiently. The application will be accessible at tasks.joemaffei.dev and is built with Vue.js,
 deployed on Cloudflare.
 
 ## Current State
@@ -20,7 +20,7 @@ development.
 - Single-user authentication (minimal setup for Joe Maffei)
 - Core task management features (create, read, update, delete tasks)
 - Offline functionality via PWA capabilities
-- Deployment to tasks.joemaffei.com via Cloudflare
+- Deployment to tasks.joemaffei.dev via Cloudflare
 
 ### Future Goals (Phase 2)
 
@@ -86,7 +86,7 @@ The project follows a standard Vue.js application structure:
 
 ## Domain and Hosting
 
-- **Domain**: tasks.joemaffei.com
+- **Domain**: tasks.joemaffei.dev
 - **Hosting**: Cloudflare Pages
 - **CDN**: Cloudflare global network
 - **SSL**: Automatic via Cloudflare
@@ -105,7 +105,7 @@ The project follows a standard Vue.js application structure:
 
 ### Phase 1
 
-- Application is accessible at tasks.joemaffei.com
+- Application is accessible at tasks.joemaffei.dev
 - User can create, view, update, and delete tasks
 - **Local-first**: All operations work offline, instant UI updates
 - **Sync**: Changes sync across devices when online

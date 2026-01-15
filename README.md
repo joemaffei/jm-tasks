@@ -6,7 +6,7 @@ hosted on Cloudflare.
 ## Overview
 
 jm-tasks is a personal task management application that will be accessible at
-[tasks.joemaffei.com](https://tasks.joemaffei.com). The application is currently in early development, starting
+[tasks.joemaffei.dev](https://tasks.joemaffei.dev). The application is currently in early development, starting
 with a minimal single-user setup and designed to scale to support multiple users with robust authentication in the
 future.
 
@@ -16,7 +16,7 @@ future.
 - **Data Architecture**: Local-first with IndexedDB and sync engine
 - **Deployment**: Cloudflare Pages
 - **Remote Storage**: Cloudflare Durable Objects (for sync)
-- **Domain**: tasks.joemaffei.com
+- **Domain**: tasks.joemaffei.dev
 - **Type**: Progressive Web Application (PWA)
 
 ## Development Setup

@@ -82,7 +82,7 @@ graph TB
   - **Alternative**: Cloudflare KV (if consistency requirements are lower)
   - Durable Objects provide strong consistency for sync operations
   - Acts as source of truth for multi-device synchronization
-- **Domain**: tasks.joemaffei.com
+- **Domain**: tasks.joemaffei.dev
 - **CDN**: Cloudflare global network
 
 ## Application Structure

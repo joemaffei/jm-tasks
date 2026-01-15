@@ -16,7 +16,7 @@ We need to choose hosting and infrastructure for the jm-tasks PWA application. R
 - Cost-effective for personal project
 - Easy deployment
 - SSL/HTTPS support
-- Custom domain support (tasks.joemaffei.com)
+- Custom domain support (tasks.joemaffei.dev)
 
 Considered options: Vercel, Netlify, Cloudflare Pages, AWS, traditional hosting.
 
@@ -55,5 +55,5 @@ Use **Cloudflare** ecosystem for hosting and infrastructure:
 - Frontend deployed to Cloudflare Pages
 - Static assets served via Cloudflare CDN
 - If custom backend needed: Cloudflare Workers + Durable Objects
-- Domain: tasks.joemaffei.com
+- Domain: tasks.joemaffei.dev
 - SSL: Automatic via Cloudflare
