@@ -11,4 +11,4 @@ tag = "v1"
 new_sqlite_classes = ["SyncStore"]
 
 [vars]
-SYNC_CORS_ORIGINS = "*"
+SYNC_CORS_ORIGINS = "https://tasks.joemaffei.dev"

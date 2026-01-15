@@ -7,6 +7,7 @@ import { getSyncStatusSnapshot, requestSync, subscribeToSyncStatus } from "@/syn
 
 const tasks = ref<Task[]>([]);
 const syncStatus = ref(getSyncStatusSnapshot());
+let lastSyncState: typeof syncStatus.value.state | null = null;
 let unsubscribeSync: (() => void) | null = null;
 
 // Load tasks on mount
@@ -52,8 +53,14 @@ const handleManualSync = async () => {
 };
 
 onMounted(async () => {
-  unsubscribeSync = subscribeToSyncStatus(nextStatus => {
+  unsubscribeSync = subscribeToSyncStatus(async nextStatus => {
+    const previousState = lastSyncState ?? nextStatus.state;
     syncStatus.value = nextStatus;
+    lastSyncState = nextStatus.state;
+
+    if (previousState === "syncing" && nextStatus.state === "idle") {
+      await loadTasks();
+    }
   });
   await loadTasks();
 });
