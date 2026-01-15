@@ -4,7 +4,7 @@ title: Configure PWA Service Worker and Manifest
 status: Done
 assignee: []
 created_date: '2026-01-13'
-completed_date: '2026-01-14'
+completed_date: '2026-01-13'
 labels:
   - setup
   - pwa

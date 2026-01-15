@@ -3,7 +3,7 @@ id: task-22
 title: Integrate Dexie Cloud Sync Engine
 status: To Do
 assignee: []
-created_date: '2026-01-16'
+created_date: '2026-01-13'
 labels:
   - sync
   - database

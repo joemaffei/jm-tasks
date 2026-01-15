@@ -1,7 +1,7 @@
 ---
 id: decision-13
 title: Tailwind CSS for Styling
-date: '2026-01-14'
+date: '2026-01-13'
 status: accepted
 ---
 

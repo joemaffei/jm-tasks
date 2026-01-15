@@ -3,7 +3,7 @@ id: task-15
 title: Create TaskItem Component
 status: Done
 assignee: []
-created_date: '2026-01-15'
+created_date: '2026-01-13'
 labels:
   - component
   - ui

@@ -3,7 +3,7 @@ id: task-18
 title: Implement Done/Reopen Functionality
 status: Done
 assignee: []
-created_date: '2026-01-15'
+created_date: '2026-01-13'
 labels:
   - feature
   - ui

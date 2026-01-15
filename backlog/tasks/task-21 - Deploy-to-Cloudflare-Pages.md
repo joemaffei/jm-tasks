@@ -3,7 +3,7 @@ id: task-21
 title: Deploy to Cloudflare Pages
 status: To Do
 assignee: []
-created_date: '2026-01-16'
+created_date: '2026-01-13'
 labels:
   - deployment
   - cloudflare

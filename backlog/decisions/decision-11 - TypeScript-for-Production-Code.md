@@ -1,7 +1,7 @@
 ---
 id: decision-11
 title: TypeScript for Production Code
-date: '2026-01-14'
+date: '2026-01-13'
 status: accepted
 ---
 

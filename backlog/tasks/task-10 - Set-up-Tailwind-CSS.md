@@ -3,7 +3,7 @@ id: task-10
 title: Set up Tailwind CSS
 status: Pending
 assignee: []
-created_date: '2026-01-14'
+created_date: '2026-01-13'
 labels:
   - setup
   - styling
