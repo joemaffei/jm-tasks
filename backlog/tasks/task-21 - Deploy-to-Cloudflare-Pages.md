@@ -1,7 +1,7 @@
 ---
 id: task-21
 title: Deploy to Cloudflare Pages
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-13'
 labels:
@@ -17,14 +17,14 @@ priority: high
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Deploy the jm-tasks PWA to Cloudflare Pages and configure it to be accessible at tasks.joemaffei.com. Set up continuous deployment, configure build settings, and verify the application is live and working correctly.
+Deploy the jm-tasks PWA to Cloudflare Pages and configure it to be accessible at tasks.joemaffei.dev. Set up continuous deployment, configure build settings, and verify the application is live and working correctly.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 
 - [ ] Repository connected to Cloudflare Pages
 - [ ] Build settings configured (build command, output directory)
-- [ ] Application deployed and accessible at tasks.joemaffei.com
+- [ ] Application deployed and accessible at tasks.joemaffei.dev
 - [ ] Custom domain configured and SSL certificate active
 - [ ] Automatic deployments on push to main branch working
 - [ ] Preview deployments for pull requests working
@@ -55,7 +55,7 @@ Deploy the jm-tasks PWA to Cloudflare Pages and configure it to be accessible at
    - No secrets should be committed to repository
 
 4. Custom Domain Configuration:
-   - Add custom domain: tasks.joemaffei.com
+   - Add custom domain: tasks.joemaffei.dev
    - Configure DNS records (CNAME or A record)
    - Verify SSL certificate is automatically provisioned
    - Ensure HTTPS is enforced
@@ -73,7 +73,7 @@ Deploy the jm-tasks PWA to Cloudflare Pages and configure it to be accessible at
    - Ensure all assets are generated correctly
 
 2. Application Testing:
-   - Access application at tasks.joemaffei.com
+   - Access application at tasks.joemaffei.dev
    - Verify application loads correctly
    - Test core functionality (create, edit, delete tasks)
    - Verify PWA features work (service worker, manifest)
@@ -96,7 +96,7 @@ Deploy the jm-tasks PWA to Cloudflare Pages and configure it to be accessible at
 - Task 3 (Vue 3 project initialized)
 - Task 9 (PWA Service Worker and Manifest configured)
 - Cloudflare account with Pages access
-- Domain access (tasks.joemaffei.com)
+- Domain access (tasks.joemaffei.dev)
 - DNS access for domain configuration
 - Node.js 22 LTS
 - npm 10+
@@ -104,7 +104,7 @@ Deploy the jm-tasks PWA to Cloudflare Pages and configure it to be accessible at
 ## Deliverables
 
 1. Application deployed to Cloudflare Pages
-2. Custom domain configured (tasks.joemaffei.com)
+2. Custom domain configured (tasks.joemaffei.dev)
 3. SSL certificate active and HTTPS enforced
 4. Automatic deployment pipeline working
 5. Preview deployments configured
@@ -113,7 +113,7 @@ Deploy the jm-tasks PWA to Cloudflare Pages and configure it to be accessible at
 
 ## Testing
 
-- Verify application is accessible at tasks.joemaffei.com
+- Verify application is accessible at tasks.joemaffei.dev
 - Test all core functionality in production
 - Verify PWA features work (installable, offline capable)
 - Test automatic deployments (push to main triggers build)
