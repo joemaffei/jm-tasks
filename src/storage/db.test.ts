@@ -1,6 +1,19 @@
 import "fake-indexeddb/auto";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { db, taskSchema } from "@/storage/db";
+import { createSyncId } from "@/utils/ids";
+import { getDeviceId } from "@/sync/syncIdentity";
+
+const baseTask = () => ({
+  syncId: createSyncId(),
+  deviceId: getDeviceId(),
+  title: "Test Task",
+  status: "todo",
+  section: "today",
+  order: 0,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+});
 
 describe("Database", () => {
   beforeEach(async () => {
@@ -13,6 +26,7 @@ describe("Database", () => {
   afterEach(async () => {
     // Clear all data after each test to ensure isolation
     await db.tasks.clear();
+    await db.syncQueue.clear();
   });
 
   describe("Database initialization", () => {
@@ -38,13 +52,8 @@ describe("Database", () => {
   describe("Task CRUD operations", () => {
     it("can create a task", async () => {
       const newTask = {
-        title: "Test Task",
+        ...baseTask(),
         description: "Test Description",
-        status: "todo",
-        section: "today",
-        order: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       const id = await db.tasks.add(newTask);
@@ -61,12 +70,10 @@ describe("Database", () => {
 
     it("can read a task by id", async () => {
       const newTask = {
+        ...baseTask(),
         title: "Read Test Task",
         status: "in-progress",
         section: "this-week",
-        order: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       const id = await db.tasks.add(newTask);
@@ -81,12 +88,8 @@ describe("Database", () => {
 
     it("can update a task", async () => {
       const newTask = {
+        ...baseTask(),
         title: "Original Title",
-        status: "todo",
-        section: "today",
-        order: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       const id = await db.tasks.add(newTask);
@@ -110,12 +113,8 @@ describe("Database", () => {
 
     it("can delete a task", async () => {
       const newTask = {
+        ...baseTask(),
         title: "Task to Delete",
-        status: "todo",
-        section: "today",
-        order: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       const id = await db.tasks.add(newTask);
@@ -127,20 +126,14 @@ describe("Database", () => {
 
     it("can get all tasks", async () => {
       const task1 = {
+        ...baseTask(),
         title: "Task 1",
-        status: "todo",
-        section: "today",
-        order: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
       const task2 = {
+        ...baseTask(),
         title: "Task 2",
         status: "in-progress",
         section: "this-week",
-        order: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       await db.tasks.add(task1);
@@ -154,20 +147,14 @@ describe("Database", () => {
 
     it("can query tasks by status", async () => {
       const todoTask = {
+        ...baseTask(),
         title: "Todo Task",
-        status: "todo",
-        section: "today",
-        order: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
       const doneTask = {
+        ...baseTask(),
         title: "Done Task",
         status: "done",
-        section: "today",
         order: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       await db.tasks.add(todoTask);
@@ -180,20 +167,13 @@ describe("Database", () => {
 
     it("can query tasks by section", async () => {
       const todayTask = {
+        ...baseTask(),
         title: "Today Task",
-        status: "todo",
-        section: "today",
-        order: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
       const weekTask = {
+        ...baseTask(),
         title: "Week Task",
-        status: "todo",
         section: "this-week",
-        order: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       await db.tasks.add(todayTask);
@@ -206,28 +186,18 @@ describe("Database", () => {
 
     it("can query tasks by section and sort by order", async () => {
       const task1 = {
+        ...baseTask(),
         title: "Task 1",
-        status: "todo",
-        section: "today",
         order: 2,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
       const task2 = {
+        ...baseTask(),
         title: "Task 2",
-        status: "todo",
-        section: "today",
-        order: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
       const task3 = {
+        ...baseTask(),
         title: "Task 3",
-        status: "todo",
-        section: "today",
         order: 1,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       await db.tasks.add(task1);
@@ -249,6 +219,8 @@ describe("Database", () => {
     it("validates task schema structure", () => {
       const validTask = {
         id: 1,
+        syncId: createSyncId(),
+        deviceId: getDeviceId(),
         title: "Valid Task",
         description: "Description",
         status: "todo",
@@ -271,6 +243,8 @@ describe("Database", () => {
 
     it("validates task with minimal required fields", () => {
       const minimalTask = {
+        syncId: createSyncId(),
+        deviceId: getDeviceId(),
         title: "Minimal Task",
         status: "in-progress",
         section: "today",
@@ -285,6 +259,8 @@ describe("Database", () => {
 
     it("rejects task with invalid status", () => {
       const invalidTask = {
+        syncId: createSyncId(),
+        deviceId: getDeviceId(),
         title: "Invalid Task",
         status: "invalid-status",
         section: "today",
@@ -299,6 +275,8 @@ describe("Database", () => {
 
     it("rejects task with invalid section", () => {
       const invalidTask = {
+        syncId: createSyncId(),
+        deviceId: getDeviceId(),
         title: "Invalid Task",
         status: "todo",
         section: "invalid-section",
@@ -313,6 +291,8 @@ describe("Database", () => {
 
     it("rejects task with missing required fields", () => {
       const invalidTask = {
+        syncId: createSyncId(),
+        deviceId: getDeviceId(),
         title: "Missing Status",
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -324,6 +304,8 @@ describe("Database", () => {
 
     it("accepts task with originalSection field", () => {
       const task = {
+        syncId: createSyncId(),
+        deviceId: getDeviceId(),
         title: "Task with Original Section",
         status: "done",
         section: "today",
@@ -345,6 +327,8 @@ describe("Database", () => {
 
       statuses.forEach(status => {
         const task = {
+          syncId: createSyncId(),
+          deviceId: getDeviceId(),
           title: `Task with status ${status}`,
           status,
           section: "today",
@@ -363,6 +347,8 @@ describe("Database", () => {
 
       sections.forEach(section => {
         const task = {
+          syncId: createSyncId(),
+          deviceId: getDeviceId(),
           title: `Task in ${section}`,
           status: "todo",
           section,
@@ -384,12 +370,8 @@ describe("Database", () => {
     it("has correct indexes", async () => {
       // Add a task to verify schema is correct
       const task = {
+        ...baseTask(),
         title: "Schema Test",
-        status: "todo",
-        section: "today",
-        order: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       const id = await db.tasks.add(task);
@@ -413,20 +395,16 @@ describe("Database", () => {
       // Reopen to trigger migration
       await db.open();
 
-      // Verify database is at version 2
-      expect(db.verno).toBe(2);
+      // Verify database is at version 3
+      expect(db.verno).toBe(3);
     });
 
     it("handles migration with existing tasks", async () => {
       // This test would require creating a v1 database first
       // For now, we'll test that new tasks require section and order
       const newTask = {
+        ...baseTask(),
         title: "New Task",
-        status: "todo",
-        section: "today",
-        order: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       };
 
       const id = await db.tasks.add(newTask);

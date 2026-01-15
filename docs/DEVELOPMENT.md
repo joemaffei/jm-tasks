@@ -446,6 +446,12 @@ content: [
 - Never commit secrets or API keys
 - Document required environment variables
 
+### Sync Environment Variables
+
+- `VITE_SYNC_API_BASE_URL`: Base URL for the Cloudflare Workers sync API
+  - Example: `https://tasks-sync.joemaffei.dev`
+  - If unset, sync is disabled in the UI
+
 ## Local-First Development
 
 ### Core Principles
@@ -483,6 +489,13 @@ const task = await fetch('/api/tasks', { method: 'POST', ... }) // Blocks UI
 - Handle sync errors gracefully
 - Allow manual sync trigger if needed
 - Queue failed syncs for retry
+
+#### Sync Workflow
+
+1. Local writes go through `taskService` and update IndexedDB
+2. A sync queue entry is created for the task (`upsert` or `delete`)
+3. The sync service pushes queued changes to the Workers endpoint
+4. The sync service pulls remote changes and merges with last-write-wins
 
 #### Testing Local-First
 

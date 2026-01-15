@@ -40,7 +40,7 @@ graph TB
 
 - **Framework**: Vue.js
 - **Type**: Single Page Application (SPA) with PWA capabilities
-- **Build Tool**: To be determined (Vite recommended for Vue 3)
+- **Build Tool**: Vite
 - **State Management**: To be determined based on complexity
 - **Routing**: Vue Router
 - **PWA Features**: Service Worker, Web App Manifest
@@ -58,15 +58,15 @@ graph TB
 - **Implementation**: **Cloudflare Workers + Durable Objects**
   - Workers provide sync endpoints and conflict resolution
   - Durable Objects act as the authoritative remote store
-  - Features (to be implemented):
-    - Change tracking
-    - Background synchronization
-    - Conflict resolution (configurable strategies)
+  - Features:
+    - Change tracking via local sync queue
+    - Background synchronization (polling + online events)
+    - Conflict resolution (last-write-wins for Phase 1)
     - Delta sync (only sends changes, not full datasets)
-    - Optimistic updates
+    - Optimistic updates via local-first writes
     - Offline queue management
     - Multi-device synchronization
-    - Real-time updates when online
+    - Real-time updates when online (future)
   - **Alternative Options** (if needed):
     - Cloudflare KV (eventually consistent, simpler)
 
@@ -143,6 +143,28 @@ graph TB
 - **Multi-Device Sync**: Changes sync across devices when online
 - **Conflict Resolution**: Handles concurrent edits gracefully
 - **Reduced Server Load**: Sync only changes, not full data sets
+
+## Sync Data Model
+
+### Task Metadata
+
+- Each task has a stable `syncId` generated on creation
+- Each device stores a persistent `deviceId`
+- Sync metadata fields:
+  - `deletedAt` for soft deletes
+  - `lastSyncedAt` for sync bookkeeping
+- Local deletes are soft deletes to ensure the sync engine can propagate them
+
+### Sync Queue
+
+- Local writes enqueue changes into a sync queue
+- The queue is flushed on successful sync
+- Queue entries are keyed by `taskSyncId` to collapse multiple changes into the latest state
+
+### Sync Endpoints
+
+- `POST /sync/push` receives batched local changes
+- `GET /sync/pull?since=ISO_TIMESTAMP` returns remote changes since last sync
 
 ### Web App Manifest
 

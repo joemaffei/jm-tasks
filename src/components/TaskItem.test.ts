@@ -2,9 +2,13 @@ import { describe, it, expect } from "vitest";
 import { mount } from "@vue/test-utils";
 import TaskItem from "./TaskItem.vue";
 import type { Task } from "@/storage/db";
+import { createSyncId } from "@/utils/ids";
+import { getDeviceId } from "@/sync/syncIdentity";
 
 const createTestTask = (overrides?: Partial<Task>): Task => ({
   id: 1,
+  syncId: createSyncId(),
+  deviceId: getDeviceId(),
   title: "Test Task",
   status: "todo",
   section: "today",

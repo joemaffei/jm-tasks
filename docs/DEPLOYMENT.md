@@ -26,6 +26,7 @@ integration with Cloudflare's ecosystem.
 - Configure environment variables in Cloudflare Pages dashboard
 - Separate variables for production, preview deployments
 - Never commit secrets to repository
+  - `VITE_SYNC_API_BASE_URL` for the frontend to reach Workers sync API
 
 ### Build Configuration
 
@@ -58,9 +59,8 @@ Git Push → Cloudflare Pages Build → Deploy to Production
 
 ### Initial Implementation
 
-- Start with Cloudflare Workers + KV for simplicity
-- Evaluate need for Durable Objects or R2 as data grows
-- Plan migration path if more robust database is needed
+- Workers sync endpoints are required for `VITE_SYNC_API_BASE_URL`
+- Durable Objects are recommended as the authoritative store for sync
 
 ## CI/CD Considerations
 

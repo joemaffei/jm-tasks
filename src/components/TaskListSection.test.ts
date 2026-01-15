@@ -4,9 +4,13 @@ import { mount } from "@vue/test-utils";
 import TaskListSection from "./TaskListSection.vue";
 import type { Task } from "@/storage/db";
 import { db } from "@/storage/db";
+import { createSyncId } from "@/utils/ids";
+import { getDeviceId } from "@/sync/syncIdentity";
 
 const createTestTask = (overrides?: Partial<Task>): Task => ({
   id: Math.floor(Math.random() * 10000),
+  syncId: createSyncId(),
+  deviceId: getDeviceId(),
   title: "Test Task",
   status: "todo",
   section: "today",
@@ -25,6 +29,7 @@ describe("TaskListSection", () => {
 
   afterEach(async () => {
     await db.tasks.clear();
+    await db.syncQueue.clear();
   });
 
   it("renders section title correctly", () => {

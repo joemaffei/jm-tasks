@@ -25,6 +25,7 @@ describe("TaskService", () => {
   afterEach(async () => {
     // Clear all data after each test to ensure isolation
     await db.tasks.clear();
+    await db.syncQueue.clear();
   });
 
   describe("createTask", () => {
@@ -33,6 +34,8 @@ describe("TaskService", () => {
 
       expect(task).toBeDefined();
       expect(task.id).toBeGreaterThan(0);
+      expect(task.syncId).toBeDefined();
+      expect(task.deviceId).toBeDefined();
       expect(task.title).toBe("Test Task");
       expect(task.section).toBe("today");
       expect(task.order).toBe(0);
@@ -223,6 +226,14 @@ describe("TaskService", () => {
     it("returns empty array when no tasks exist", async () => {
       const tasks = await getAllTasks();
 
+      expect(tasks).toEqual([]);
+    });
+
+    it("excludes deleted tasks from results", async () => {
+      const created = await createTask("today", "Task to Delete");
+      await deleteTask(created.id!);
+
+      const tasks = await getAllTasks();
       expect(tasks).toEqual([]);
     });
   });

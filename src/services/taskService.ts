@@ -1,4 +1,19 @@
 import { db, taskSchema, Task } from "@/storage/db";
+import { createSyncId } from "@/utils/ids";
+import { getDeviceId } from "@/sync/syncIdentity";
+import { enqueueTaskDelete, enqueueTaskUpsert } from "@/sync/syncService";
+
+type TaskSection = "today" | "this-week" | "soon" | "someday";
+
+const ACTIVE_TASK_FILTER = (task: Task) => !task.deletedAt;
+
+async function getActiveTasksBySection(section: TaskSection): Promise<Task[]> {
+  return db.tasks
+    .where("section")
+    .equals(section)
+    .filter(ACTIVE_TASK_FILTER)
+    .toArray();
+}
 
 /**
  * Create a new task in the specified section
@@ -7,7 +22,7 @@ import { db, taskSchema, Task } from "@/storage/db";
  * @returns Promise resolving to the created task
  */
 export async function createTask(
-  section: "today" | "this-week" | "soon" | "someday",
+  section: TaskSection,
   title: string
 ): Promise<Task> {
   try {
@@ -21,10 +36,7 @@ export async function createTask(
     }
 
     // Get current max order for the section
-    const existingTasks = await db.tasks
-      .where("section")
-      .equals(section)
-      .toArray();
+    const existingTasks = await getActiveTasksBySection(section);
 
     const maxOrder =
       existingTasks.length > 0
@@ -33,6 +45,8 @@ export async function createTask(
 
     // Create new task object
     const newTask: Omit<Task, "id"> = {
+      syncId: createSyncId(),
+      deviceId: getDeviceId(),
       title: title.trim(),
       section,
       order: maxOrder + 1,
@@ -58,6 +72,8 @@ export async function createTask(
       throw new Error("Failed to retrieve created task");
     }
 
+    await enqueueTaskUpsert(createdTask);
+
     return createdTask;
   } catch (error) {
     console.error("Error creating task:", error);
@@ -80,6 +96,10 @@ export async function updateTask(
     const existingTask = await db.tasks.get(id);
     if (!existingTask) {
       throw new Error(`Task with id ${id} not found`);
+    }
+
+    if (existingTask.deletedAt) {
+      throw new Error(`Task with id ${id} is deleted`);
     }
 
     // Update updatedAt timestamp
@@ -106,6 +126,8 @@ export async function updateTask(
       throw new Error("Failed to retrieve updated task");
     }
 
+    await enqueueTaskUpsert(task);
+
     return task;
   } catch (error) {
     console.error("Error updating task:", error);
@@ -126,8 +148,22 @@ export async function deleteTask(id: number): Promise<void> {
       throw new Error(`Task with id ${id} not found`);
     }
 
-    // Delete from database
-    await db.tasks.delete(id);
+    if (existingTask.deletedAt) {
+      return;
+    }
+
+    const now = new Date();
+    await db.tasks.update(id, {
+      deletedAt: now,
+      updatedAt: now,
+    });
+
+    const deletedTask = await db.tasks.get(id);
+    if (!deletedTask) {
+      throw new Error("Failed to retrieve deleted task");
+    }
+
+    await enqueueTaskDelete(deletedTask);
   } catch (error) {
     console.error("Error deleting task:", error);
     throw error;
@@ -140,7 +176,7 @@ export async function deleteTask(id: number): Promise<void> {
  * @returns Promise resolving to array of tasks sorted by order
  */
 export async function getTasksBySection(
-  section: "today" | "this-week" | "soon" | "someday"
+  section: TaskSection
 ): Promise<Task[]> {
   try {
     if (!["today", "this-week", "soon", "someday"].includes(section)) {
@@ -151,6 +187,7 @@ export async function getTasksBySection(
     const tasks = await db.tasks
       .where("section")
       .equals(section)
+      .filter(ACTIVE_TASK_FILTER)
       .sortBy("order");
 
     return tasks;
@@ -167,7 +204,12 @@ export async function getTasksBySection(
  */
 export async function getTask(id: number): Promise<Task | undefined> {
   try {
-    return await db.tasks.get(id);
+    const task = await db.tasks.get(id);
+    if (!task || task.deletedAt) {
+      return undefined;
+    }
+
+    return task;
   } catch (error) {
     console.error("Error getting task:", error);
     throw error;
@@ -180,7 +222,7 @@ export async function getTask(id: number): Promise<Task | undefined> {
  */
 export async function getAllTasks(): Promise<Task[]> {
   try {
-    return await db.tasks.toArray();
+    return await db.tasks.filter(ACTIVE_TASK_FILTER).toArray();
   } catch (error) {
     console.error("Error getting all tasks:", error);
     throw error;
@@ -213,14 +255,11 @@ export async function reorderTask(
  */
 export async function moveTaskToSection(
   id: number,
-  newSection: "today" | "this-week" | "soon" | "someday"
+  newSection: TaskSection
 ): Promise<Task> {
   try {
     // Get current max order in target section
-    const existingTasks = await db.tasks
-      .where("section")
-      .equals(newSection)
-      .toArray();
+    const existingTasks = await getActiveTasksBySection(newSection);
 
     const maxOrder =
       existingTasks.length > 0
@@ -271,6 +310,10 @@ export async function toggleTaskDone(id: number): Promise<Task> {
       throw new Error(`Task with id ${id} not found`);
     }
 
+    if (task.deletedAt) {
+      throw new Error(`Task with id ${id} is deleted`);
+    }
+
     let updates: Partial<Task>;
 
     if (task.status === "done") {
@@ -283,7 +326,7 @@ export async function toggleTaskDone(id: number): Promise<Task> {
       const existingTasks = await db.tasks
         .where("section")
         .equals(targetSection)
-        .filter(t => t.id !== id)
+        .filter(t => t.id !== id && !t.deletedAt)
         .toArray();
 
       const maxOrder =

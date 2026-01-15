@@ -1,7 +1,7 @@
 ---
 id: task-22
 title: Implement Cloudflare-Only Sync Layer
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-01-13'
 labels:
@@ -25,13 +25,13 @@ Implement a Cloudflare-only sync layer to enable bidirectional synchronization b
 
 - [ ] Cloudflare sync endpoints implemented (Workers)
 - [ ] Durable Objects configured as remote source of truth
-- [ ] Database schema updated for sync metadata (if needed)
-- [ ] Sync service created in `src/sync/` directory
-- [ ] Background synchronization working
+- [x] Database schema updated for sync metadata (if needed)
+- [x] Sync service created in `src/sync/` directory
+- [x] Background synchronization working
 - [ ] Multi-device sync tested and working
-- [ ] Conflict resolution configured (last-write-wins initially)
-- [ ] Offline queue management working
-- [ ] Sync status visible in UI (optional but recommended)
+- [x] Conflict resolution configured (last-write-wins initially)
+- [x] Offline queue management working
+- [x] Sync status visible in UI (optional but recommended)
 - [ ] Sync tested with multiple devices/browsers
 
 ## Technical Implementation

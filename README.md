@@ -50,6 +50,17 @@ future.
    npm run lint:md:fix    # Auto-fix issues
    ```
 
+### Sync Setup (Optional)
+
+Sync is disabled by default. To enable it, configure the sync API base URL:
+
+```bash
+# Example
+VITE_SYNC_API_BASE_URL="https://tasks-sync.joemaffei.dev"
+```
+
+When unset, the app runs fully local-first with no network sync attempts.
+
 ### Auto-Fix on Save
 
 The project is configured to automatically fix markdown linting issues on save when using VS Code:
