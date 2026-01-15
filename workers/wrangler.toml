@@ -8,7 +8,7 @@ bindings = [{ name = "SYNC_STORE", class_name = "SyncStore" }]
 
 [[migrations]]
 tag = "v1"
-new_classes = ["SyncStore"]
+new_sqlite_classes = ["SyncStore"]
 
 [vars]
 SYNC_CORS_ORIGINS = "*"
