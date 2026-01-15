@@ -39,6 +39,8 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // Avoid workbox terser build crash on Node 22.
+        mode: "development",
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
         runtimeCaching: [
           {
