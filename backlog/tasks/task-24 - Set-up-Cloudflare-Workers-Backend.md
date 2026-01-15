@@ -1,7 +1,7 @@
 ---
 id: task-24
 title: Set up Cloudflare Workers Backend
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-01-13'
 labels:

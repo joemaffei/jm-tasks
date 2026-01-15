@@ -451,6 +451,19 @@ content: [
 - `VITE_SYNC_API_BASE_URL`: Base URL for the Cloudflare Workers sync API
   - Example: `https://tasks-sync.joemaffei.dev`
   - If unset, sync is disabled in the UI
+- `VITE_SYNC_API_TOKEN`: Optional bearer token for sync API requests
+  - Must match `SYNC_API_TOKEN` configured on the Worker (if set)
+  - Leave unset to disable auth (Phase 1 default)
+
+### Workers Sync Backend
+
+Run the Cloudflare Workers sync backend locally:
+
+```bash
+npm run workers:dev
+```
+
+Default development URL: `http://127.0.0.1:8787`
 
 ## Local-First Development
 

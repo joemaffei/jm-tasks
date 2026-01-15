@@ -46,7 +46,7 @@ describe("App.vue", () => {
     await router.push("/");
     await router.isReady();
 
-    const heading = getByRole("heading", { name: /home/i });
+    const heading = getByRole("heading", { name: /task management/i });
     expect(heading).toBeTruthy();
   });
 });

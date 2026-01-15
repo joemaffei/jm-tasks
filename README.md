@@ -57,6 +57,7 @@ Sync is disabled by default. To enable it, configure the sync API base URL:
 ```bash
 # Example
 VITE_SYNC_API_BASE_URL="https://tasks-sync.joemaffei.dev"
+VITE_SYNC_API_TOKEN="your-optional-sync-token"
 ```
 
 When unset, the app runs fully local-first with no network sync attempts.

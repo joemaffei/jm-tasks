@@ -9,3 +9,4 @@
 //
 // Configure Vue Test Utils global config if needed
 // Add any global test utilities or fixtures here
+import "fake-indexeddb/auto";

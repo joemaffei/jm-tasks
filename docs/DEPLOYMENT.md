@@ -27,6 +27,7 @@ integration with Cloudflare's ecosystem.
 - Separate variables for production, preview deployments
 - Never commit secrets to repository
   - `VITE_SYNC_API_BASE_URL` for the frontend to reach Workers sync API
+  - `VITE_SYNC_API_TOKEN` (optional) for sync API authentication
 
 ### Build Configuration
 
@@ -61,6 +62,13 @@ Git Push → Cloudflare Pages Build → Deploy to Production
 
 - Workers sync endpoints are required for `VITE_SYNC_API_BASE_URL`
 - Durable Objects are recommended as the authoritative store for sync
+
+### Workers Sync Backend
+
+- Deploy the Worker from the `workers/` directory
+- Configure secrets via Wrangler:
+  - `SYNC_API_TOKEN` (optional)
+  - `SYNC_CORS_ORIGINS` (optional)
 
 ## CI/CD Considerations
 

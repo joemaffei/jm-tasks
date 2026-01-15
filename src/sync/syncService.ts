@@ -17,6 +17,7 @@ export type SyncStatus = {
 };
 
 const SYNC_API_BASE_URL: string = import.meta.env.VITE_SYNC_API_BASE_URL ?? "";
+const SYNC_API_TOKEN: string = import.meta.env.VITE_SYNC_API_TOKEN ?? "";
 const LAST_SYNC_KEY = "jm-tasks:last-sync-at";
 
 const status: SyncStatus = {
@@ -218,11 +219,17 @@ async function pushLocalChanges(): Promise<void> {
     })),
   };
 
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+
+  if (SYNC_API_TOKEN) {
+    headers.Authorization = `Bearer ${SYNC_API_TOKEN}`;
+  }
+
   const response = await fetch(`${SYNC_API_BASE_URL}/sync/push`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify(payload),
   });
 
@@ -246,11 +253,17 @@ async function pushLocalChanges(): Promise<void> {
 async function pullRemoteChanges(): Promise<void> {
   const lastSyncAt = getLastSyncAt();
   const query = lastSyncAt ? `?since=${lastSyncAt.toISOString()}` : "";
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+
+  if (SYNC_API_TOKEN) {
+    headers.Authorization = `Bearer ${SYNC_API_TOKEN}`;
+  }
+
   const response = await fetch(`${SYNC_API_BASE_URL}/sync/pull${query}`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers,
   });
 
   if (!response.ok) {

@@ -113,7 +113,8 @@ describe("HomeView", () => {
     await new Promise(resolve => setTimeout(resolve, 100));
 
     const deletedTask = await db.tasks.get(task.id!);
-    expect(deletedTask).toBeUndefined();
+    expect(deletedTask).toBeDefined();
+    expect(deletedTask?.deletedAt).toBeInstanceOf(Date);
   });
 
   it("handles toggle done", async () => {

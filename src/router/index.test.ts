@@ -27,9 +27,9 @@ describe("Router", () => {
     await router.push("/");
     await router.isReady();
 
-    const heading = getByRole("heading", { name: /home/i });
+    const heading = getByRole("heading", { name: /task management/i });
     expect(heading).toBeTruthy();
-    expect(heading.textContent).toBe("Home");
+    expect(heading.textContent).toBe("Task Management");
   });
 
   it("router configuration is valid", () => {
