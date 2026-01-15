@@ -1,7 +1,7 @@
 ---
 id: decision-3
-title: Dexie Cloud as Sync Engine
-date: '2026-01-13'
+title: Cloudflare-Only Sync Layer
+date: '2026-01-14'
 status: accepted
 ---
 
@@ -22,7 +22,8 @@ Requirements:
 
 Considered options:
 
-- **Dexie Cloud**: Built on Dexie.js, designed for IndexedDB
+- **Cloudflare-only sync**: Workers + Durable Objects
+- **Dexie Cloud**: SaaS built on Dexie.js, designed for IndexedDB
 - **PowerSync**: Uses SQLite, would require architecture changes
 - **Replicache**: More complex, may be overkill for single-user
 - **ElectricSQL**: Real-time sync with PostgreSQL, more setup required
@@ -30,49 +31,37 @@ Considered options:
 
 ## Decision
 
-Use **Dexie Cloud** as the sync engine for bidirectional synchronization.
+Use a **Cloudflare-only** sync layer implemented with **Cloudflare Workers** and **Durable Objects**.
 
-Dexie Cloud provides:
-
-- Built on Dexie.js (IndexedDB wrapper we're already using)
-- Seamless integration with IndexedDB
-- Automatic change tracking
-- Background synchronization
-- Conflict resolution (configurable strategies)
-- Delta sync (only sends changes, not full datasets)
-- Optimistic updates
-- Offline queue management
-- Multi-device synchronization
-- Real-time updates when online
+This keeps the sync backend fully within the Cloudflare ecosystem while preserving a local-first UX.
 
 ## Consequences
 
 ### Positive
 
-- No custom sync implementation needed - saves significant development time
-- Well-maintained npm package with active development
-- Designed specifically for IndexedDB (perfect fit)
-- Handles all sync complexity out of the box
-- Good documentation and community support
-- Vue-friendly integration
-- Reduces risk of bugs in sync logic
+- No dependency on third-party SaaS for sync
+- Full control over data and sync protocol
+- Keeps infrastructure within Cloudflare stack
+- Easier compliance and long-term portability
 
 ### Negative
 
-- Dependency on external library (but well-maintained)
-- May need to adapt to Dexie Cloud's API patterns
-- Potential vendor lock-in (but can migrate if needed)
+- Requires building and maintaining sync logic
+- More development time up front
+- Higher risk of bugs in sync/conflict logic
 
 ### Alternatives Considered
 
-- **Custom sync implementation**: Too much development overhead for a personal project
+- **Dexie Cloud**: SaaS dependency not desired
 - **PowerSync**: Uses SQLite, would require abandoning IndexedDB architecture
 - **Replicache**: More complex than needed for single-user initially
 - **ElectricSQL**: Requires PostgreSQL backend, more setup complexity
+- **Custom sync implementation outside Cloudflare**: Avoided to keep infra Cloudflare-only
 
 ### Implementation Notes
 
 - Use Dexie.js for IndexedDB operations
-- Use Dexie Cloud for sync layer
-- Remote storage: Dexie Cloud backend or Cloudflare Durable Objects if custom backend needed
-- Sync happens transparently in background
+- Implement sync endpoints in Cloudflare Workers
+- Use Durable Objects as the authoritative remote store
+- Add conflict resolution strategy (initially last-write-wins)
+- Sync runs in background with offline queueing

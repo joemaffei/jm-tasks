@@ -1,6 +1,6 @@
 ---
 id: task-24
-title: Set up Cloudflare Workers Backend (if needed)
+title: Set up Cloudflare Workers Backend
 status: To Do
 assignee: []
 created_date: '2026-01-13'
@@ -10,32 +10,30 @@ labels:
   - infrastructure
   - sync
 dependencies:
-  - task-22
-priority: low
+  - task-23
+priority: high
 ---
 
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Set up Cloudflare Workers backend infrastructure if Dexie Cloud requires a custom backend or if we need custom sync endpoints. This includes Workers for API endpoints, Durable Objects or KV for storage, and integration with the sync engine.
+Set up a Cloudflare Workers backend for the Cloudflare-only sync layer. This includes Workers for sync API endpoints, Durable Objects as the authoritative store, and integration with the frontend sync service.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 
 - [ ] Cloudflare Workers project created
 - [ ] Workers development environment set up
-- [ ] Sync API endpoints created (if needed)
-- [ ] Durable Objects or KV storage configured
+- [ ] Sync API endpoints created
+- [ ] Durable Objects storage configured
 - [ ] Workers deployed to Cloudflare
 - [ ] API endpoints accessible and tested
-- [ ] Integration with Dexie Cloud sync working
+- [ ] Integration with frontend sync service working
 - [ ] Error handling and logging implemented
 - [ ] Environment variables configured
 - [ ] CORS configured correctly
 
 ## Technical Implementation
-
-**Note:** This task may not be needed if Dexie Cloud provides a hosted backend. Evaluate task-22 first to determine if custom backend is required.
 
 **Cloudflare Workers Setup:**
 
@@ -48,7 +46,7 @@ Set up Cloudflare Workers backend infrastructure if Dexie Cloud requires a custo
    - Create `workers/` directory in project root
    - Configure build and deployment settings
 
-**Sync API Endpoints (if needed):**
+**Sync API Endpoints:**
 
 1. Create sync endpoints:
    - `POST /sync/push` - Receive local changes from client
@@ -64,7 +62,7 @@ Set up Cloudflare Workers backend infrastructure if Dexie Cloud requires a custo
 
 **Storage Setup:**
 
-1. Durable Objects (if needed):
+1. Durable Objects:
    - Create Durable Object class for sync state
    - Configure Durable Object bindings
    - Implement sync state management
@@ -105,7 +103,6 @@ Set up Cloudflare Workers backend infrastructure if Dexie Cloud requires a custo
 
 ## Dependencies
 
-- Task 22 (Dexie Cloud Integration - to determine if backend needed)
 - Task 23 (Authentication - for API security)
 - Cloudflare account with Workers access
 - Node.js 22 LTS
@@ -114,11 +111,11 @@ Set up Cloudflare Workers backend infrastructure if Dexie Cloud requires a custo
 ## Deliverables
 
 1. Cloudflare Workers project set up
-2. Sync API endpoints created (if needed)
-3. Storage configured (Durable Objects or KV)
+2. Sync API endpoints created
+3. Durable Objects configured for storage
 4. Workers deployed to Cloudflare
 5. API endpoints tested and working
-6. Integration with Dexie Cloud verified
+6. Integration with frontend sync service verified
 7. Documentation of backend setup
 
 ## Testing
@@ -136,9 +133,6 @@ Set up Cloudflare Workers backend infrastructure if Dexie Cloud requires a custo
 
 ## Notes
 
-- **This task may not be needed** if Dexie Cloud provides hosted backend
-- Evaluate task-22 first before starting this task
-- If Dexie Cloud has hosted service, prefer using that over custom backend
 - Keep backend simple for Phase 1 (single user)
 - Design with Phase 2 (multi-user) in mind
 - Document any Cloudflare-specific configuration

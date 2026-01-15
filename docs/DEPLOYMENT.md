@@ -54,6 +54,7 @@ Git Push → Cloudflare Pages Build → Deploy to Production
 - **Cloudflare KV**: Key-value storage for simple data
 - **Cloudflare Durable Objects**: Strongly consistent storage
 - **Cloudflare R2**: Object storage (S3-compatible)
+- **Sync Backend**: Workers + Durable Objects (Cloudflare-only sync)
 
 ### Initial Implementation
 

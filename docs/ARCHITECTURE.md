@@ -55,12 +55,11 @@ graph TB
 ### Sync Engine
 
 - **Purpose**: Bidirectional synchronization between local and remote storage
-- **Implementation**: **Dexie Cloud** (recommended)
-  - Built on Dexie.js, integrates seamlessly with IndexedDB
-  - Well-maintained, popular npm package (`dexie-cloud`)
-  - Handles all sync complexity out of the box
-  - Features:
-    - Automatic change tracking
+- **Implementation**: **Cloudflare Workers + Durable Objects**
+  - Workers provide sync endpoints and conflict resolution
+  - Durable Objects act as the authoritative remote store
+  - Features (to be implemented):
+    - Change tracking
     - Background synchronization
     - Conflict resolution (configurable strategies)
     - Delta sync (only sends changes, not full datasets)
@@ -69,16 +68,14 @@ graph TB
     - Multi-device synchronization
     - Real-time updates when online
   - **Alternative Options** (if needed):
-    - PowerSync: Uses SQLite, would require architecture changes
-    - Replicache: More complex, may be overkill for single-user
-    - ElectricSQL: Real-time sync with PostgreSQL, more setup required
+    - Cloudflare KV (eventually consistent, simpler)
 
 ### Backend & Infrastructure
 
 - **Hosting**: Cloudflare Pages (static assets)
 - **API**: Cloudflare Workers (sync endpoints, if custom backend needed)
 - **Remote Data Storage**:
-  - **Primary**: Dexie Cloud backend (if available) or Cloudflare Durable Objects
+  - **Primary**: Cloudflare Durable Objects
   - **Alternative**: Cloudflare KV (if consistency requirements are lower)
   - Durable Objects provide strong consistency for sync operations
   - Acts as source of truth for multi-device synchronization

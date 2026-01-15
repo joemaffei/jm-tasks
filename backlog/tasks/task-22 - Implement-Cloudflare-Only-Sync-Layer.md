@@ -1,6 +1,6 @@
 ---
 id: task-22
-title: Integrate Dexie Cloud Sync Engine
+title: Implement Cloudflare-Only Sync Layer
 status: To Do
 assignee: []
 created_date: '2026-01-13'
@@ -18,14 +18,14 @@ priority: high
 ## Description
 
 <!-- SECTION:DESCRIPTION:BEGIN -->
-Integrate Dexie Cloud sync engine to enable bidirectional synchronization between local IndexedDB storage and remote server. This enables multi-device synchronization, background sync, and conflict resolution as specified in the local-first architecture.
+Implement a Cloudflare-only sync layer to enable bidirectional synchronization between local IndexedDB storage and a Cloudflare-hosted backend. This enables multi-device sync, background sync, and conflict resolution while keeping infrastructure within the Cloudflare ecosystem.
 <!-- SECTION:DESCRIPTION:END -->
 
 ## Acceptance Criteria
 
-- [ ] dexie-cloud package installed
-- [ ] Dexie Cloud configured and initialized
-- [ ] Database schema updated to work with Dexie Cloud
+- [ ] Cloudflare sync endpoints implemented (Workers)
+- [ ] Durable Objects configured as remote source of truth
+- [ ] Database schema updated for sync metadata (if needed)
 - [ ] Sync service created in `src/sync/` directory
 - [ ] Background synchronization working
 - [ ] Multi-device sync tested and working
@@ -36,34 +36,23 @@ Integrate Dexie Cloud sync engine to enable bidirectional synchronization betwee
 
 ## Technical Implementation
 
-**Install Dependencies:**
-
-- `dexie-cloud@^1.x.x` (check latest stable version)
-- May need additional dependencies based on Dexie Cloud requirements
-
 **Update Database Schema:**
 
 1. Update `src/storage/db.ts`:
-   - Import Dexie Cloud
-   - Configure database with Dexie Cloud
-   - Add required fields for sync (if needed):
-     - `realmId` or similar for multi-user support
-     - Sync metadata fields
-   - Configure sync options:
-     - Conflict resolution strategy (last-write-wins for Phase 1)
-     - Sync frequency
-     - Background sync settings
+   - Add required fields for sync metadata (timestamps, device ID)
+   - Ensure stable IDs for sync operations
+   - Configure conflict strategy (last-write-wins for Phase 1)
 
 2. Database Configuration:
-   - Set up Dexie Cloud client
-   - Configure sync endpoint (Dexie Cloud backend or custom)
-   - Set up authentication (if required by Dexie Cloud)
+   - Keep Dexie.js for local storage
+   - Add sync metadata to tracked entities as needed
 
 **Create Sync Service:**
 
 1. Create `src/sync/syncService.ts`:
-   - Initialize Dexie Cloud sync
-   - Handle sync events (sync started, completed, failed)
+   - Send local changes to Workers sync endpoints
+   - Pull remote changes from Workers
+   - Handle sync events (started, completed, failed)
    - Expose sync status to application
    - Handle sync errors gracefully
    - Provide manual sync trigger (if needed)
@@ -74,16 +63,11 @@ Integrate Dexie Cloud sync engine to enable bidirectional synchronization betwee
    - Handle offline/online state changes
    - Queue sync operations when offline
 
-**Backend Setup (if needed):**
+**Backend Setup:**
 
-- If Dexie Cloud requires custom backend:
-  - Set up Cloudflare Workers endpoint (see task-24)
-  - Configure Durable Objects or KV storage
-  - Set up sync API endpoints
-- If using Dexie Cloud's hosted backend:
-  - Sign up for Dexie Cloud service
-  - Configure database connection
-  - Set up authentication
+- Implement Cloudflare Workers endpoints (see task-24)
+- Use Durable Objects as authoritative remote store
+- Secure endpoints with authentication (see task-23)
 
 **UI Integration (optional but recommended):**
 
@@ -112,20 +96,23 @@ Integrate Dexie Cloud sync engine to enable bidirectional synchronization betwee
 
 - Task 8 (IndexedDB Dexie Database Schema)
 - Task 11 (Database Schema for To-Do Sections)
-- Dexie Cloud account (if using hosted service) or Cloudflare Workers setup
+- Task 24 (Cloudflare Workers Backend)
+- Task 23 (Authentication - for API security)
+- Cloudflare account with Workers access
 - Node.js 22 LTS
 - npm 10+
 
 ## Deliverables
 
-1. Dexie Cloud installed and configured
-2. Database schema updated for sync
-3. Sync service created and integrated
-4. Background synchronization working
-5. Multi-device sync tested and verified
-6. Conflict resolution configured
-7. Sync status in UI (optional)
-8. Documentation of sync setup and configuration
+1. Cloudflare Workers sync endpoints implemented
+2. Durable Objects configured for remote storage
+3. Database schema updated for sync
+4. Sync service created and integrated
+5. Background synchronization working
+6. Multi-device sync tested and verified
+7. Conflict resolution configured
+8. Sync status in UI (optional)
+9. Documentation of sync setup and configuration
 
 ## Testing
 
@@ -148,8 +135,7 @@ Integrate Dexie Cloud sync engine to enable bidirectional synchronization betwee
 - Ensure sync doesn't block UI operations
 - Handle sync errors gracefully (don't break app if sync fails)
 - Consider rate limiting for sync operations
-- Document any Dexie Cloud configuration needed
-- May need to coordinate with task-24 if custom backend required
+- Coordinate with task-24 for API shape and storage model
 
 **Estimated Effort:** 4-6 hours
 **Priority:** High (core architecture requirement)
