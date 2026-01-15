@@ -1,15 +1,61 @@
 import "fake-indexeddb/auto";
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 import HomeView from "./HomeView.vue";
 import { db } from "@/storage/db";
 import { createTask, getAllTasks } from "@/services/taskService";
+import type { Task } from "@/storage/db";
+
+type SyncStatus = {
+  state: "idle" | "syncing" | "offline" | "error";
+  enabled: boolean;
+  lastSyncAt?: Date;
+  lastError?: string;
+};
+
+let syncListener: ((next: SyncStatus) => void) | null = null;
+let currentSyncStatus: SyncStatus = { state: "idle", enabled: true };
+
+const emitSyncStatus = (next: Partial<SyncStatus>) => {
+  currentSyncStatus = { ...currentSyncStatus, ...next };
+  syncListener?.(currentSyncStatus);
+};
+
+const buildTask = (overrides: Partial<Task> = {}): Task => ({
+  syncId: "sync-test",
+  deviceId: "device-test",
+  title: "Synced Task",
+  status: "todo",
+  section: "today",
+  order: 0,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  ...overrides,
+});
+
+vi.mock("@/sync/syncService", () => ({
+  getSyncStatusSnapshot: () => currentSyncStatus,
+  requestSync: vi.fn(),
+  subscribeToSyncStatus: (listener: (next: SyncStatus) => void) => {
+    syncListener = listener;
+    listener(currentSyncStatus);
+    return () => {
+      if (syncListener === listener) {
+        syncListener = null;
+      }
+    };
+  },
+  enqueueTaskUpsert: vi.fn(),
+  enqueueTaskDelete: vi.fn(),
+}));
 
 describe("HomeView", () => {
   beforeEach(async () => {
     if (!db.isOpen()) {
       await db.open();
     }
+    currentSyncStatus = { state: "idle", enabled: true };
+    syncListener = null;
   });
 
   afterEach(async () => {
@@ -131,5 +177,31 @@ describe("HomeView", () => {
 
     const updatedTask = await db.tasks.get(task.id!);
     expect(updatedTask?.status).toBe("done");
+  });
+
+  it("reloads tasks when sync completes", async () => {
+    const wrapper = mount(HomeView);
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    await db.tasks.add(
+      buildTask({
+        syncId: "sync-remote",
+        title: "Remote Task",
+      })
+    );
+
+    const inputValues = () =>
+      wrapper
+        .findAll('input[type="text"]')
+        .map(input => (input.element as HTMLInputElement).value);
+
+    expect(inputValues()).not.toContain("Remote Task");
+
+    emitSyncStatus({ state: "syncing" });
+    emitSyncStatus({ state: "idle", lastSyncAt: new Date() });
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    expect(inputValues()).toContain("Remote Task");
   });
 });
